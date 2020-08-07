@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class SeachRequest {
-	private String SeachOrder;
+	private String SeachTitle;
 	private String SeachStatus;
 	private String SeachCustomer;
 }

@@ -76,4 +76,10 @@ public class Order {
 	@Column(name = "status")
 	private String status;
 
+	/**
+	 *デリートフラグ
+	 */
+	@Column(name = "status")
+	private String delete_flg;
+
 }

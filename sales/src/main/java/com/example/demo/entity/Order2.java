@@ -72,4 +72,8 @@ public class Order2 {
 	 */
 	private String status;
 
+	/**
+	 *デリートフラグ
+	 */
+	private String delete_flg;
 }

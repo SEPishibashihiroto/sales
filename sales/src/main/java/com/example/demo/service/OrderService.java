@@ -7,6 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.OrderRequest;
+import com.example.demo.dto.OrderUpdateRequest;
+import com.example.demo.entity.Order;
 import com.example.demo.entity.Order2;
 import com.example.demo.repository.OrderRepository;
 
@@ -28,5 +31,25 @@ public class OrderService {
 	 */
 	public Page<Order2> getSeachUsers(String SeachCustomer, String SeachTitle, String SeachStatus, Pageable pageable) {
 		return orderRepository.findSeachAll(SeachCustomer, SeachTitle, SeachStatus, pageable);
+	}
+
+	public Order findById(int id) {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
+	public void create(OrderRequest addOrderRequest) {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	public void update(OrderUpdateRequest editOrderRequest) {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	public void delete(OrderUpdateRequest deleteOrderRequest) {
+		// TODO 自動生成されたメソッド・スタブ
+
 	}
 }

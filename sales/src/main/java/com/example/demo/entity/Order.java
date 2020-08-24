@@ -22,6 +22,7 @@ public class Order {
 	private int id;
 	/**
 	 * 顧客
+	 * 顧客名が格納
 	 */
 	@Column(name = "customer")
 	private String customer;
@@ -76,10 +77,8 @@ public class Order {
 	@Column(name = "status")
 	private String status;
 
-	/**
-	 *デリートフラグ
-	 */
-	@Column(name = "status")
-	private String delete_flg;
+	public String getCustomerNum() {
+		return (customer.equals(""))?"1":(customer.equals(""))?"2":(customer.equals(""))?"3":"another";
+	}
 
 }

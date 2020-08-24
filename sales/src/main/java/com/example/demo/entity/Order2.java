@@ -76,4 +76,8 @@ public class Order2 {
 	 *デリートフラグ
 	 */
 	private String delete_flg;
+
+	public String getCustomerNum() {
+		return (customer.equals(""))?"1":(customer.equals(""))?"2":(customer.equals(""))?"3":"another";
+	}
 }

@@ -19,4 +19,5 @@ public class OrderRequest {
 	String quoteprice;
 	String orderprice;
 	String statusid;
+	String note;
 }

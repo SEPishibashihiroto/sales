@@ -15,16 +15,16 @@ import com.example.demo.entity.Order2;
 @Repository
 public interface OrderRepository extends JpaRepository<Order2, Integer> {
 	@Query(value =
-			"SELECT id,customername AS customer,orderdate,snumber,title,"+
-			"count,specifieddate,deliverydate,billingdate,quoteprice,orderprice,statusname AS status,delete_flg"+
-			"FROM sales s, " +
-			"JOIN customer c ON s.customerid = c.customerid " +
-			"JOIN status st ON s.customerid = st.customerid " +
-			"AND s.statusid = st.statusid " +
-			"WHERE s.customerid LIKE %:SeachCustomer% "+
-			"AND s.title LIKE %:SeachTitle% "+
-			"AND s.statusid LIKE %:SeachStatus% "+
-			"AND s.delete_flg = 0", nativeQuery = true) // SQL
+			"SELECT sales.id,customer.customername AS customer,sales.orderdate,sales.snumber,sales.title,sales.count,sales.specifieddate," +
+			"sales.deliverydate,sales.billingdate,sales.quoteprice,sales.orderprice,status.statusname AS status,sales.delete_flg " +
+			"FROM sales ,customer ,status " +
+			"WHERE sales.customerid = customer.customerid " +
+			"AND sales.customerid = status.customerid " +
+			"AND sales.statusid = status.statusid " +
+			"AND sales.customerid LIKE %:SeachCustomer% " +
+			"AND sales.title LIKE %:SeachTitle% " +
+			"AND sales.statusid LIKE %:SeachStatus% " +
+			"AND sales.delete_flg = 0", nativeQuery = true) // SQL
 	public Page<Order2> findSeachAll(@Param("SeachCustomer") String SeachCustomer,
 			@Param("SeachTitle") String SeachTitle, @Param("SeachStatus") String SeachStatus, Pageable pageable);
 }

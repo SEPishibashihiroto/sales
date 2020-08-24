@@ -3,11 +3,95 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>登録画面</title>
+<link href="/css/input.css" rel="stylesheet"></link>
 <meta charset="UTF-8">
 </head>
 <body>
-<h1>製造部売上管理システム：案件登録</h1>
+	<h1>製造部売上管理システム：案件登録</h1>
 
+	<form action="#" th:action="@{/sales/adderrcheck}"
+		th:object="${addOrderRequest}" th:method="post">
+		<table>
+			<tr>
+				<th class="cell_title">顧客</th>
+				<th>:</th>
+				<td><input type="text" th:field="*{customerid}"
+					class="text customerid"></td>
+			</tr>
+			<tr>
+				<th class="cell_title">受注日</th>
+				<th>:</th>
+				<td><input type="text" th:field="*{orderdate}"
+					class="text orderdate"></td>
+			</tr>
+			<tr>
+				<th class="cell_title">S番号</th>
+				<th>:</th>
+				<td>S-<input type="text" th:field="*{snumber}"
+					class="text snumber"></td>
+			</tr>
+			<tr>
+				<th class="cell_title">件名</th>
+				<th>:</th>
+				<td><input type="text" th:field="*{title}" class="text title"></td>
+			</tr>
+			<tr>
+				<th class="cell_title">数量</th>
+				<th>:</th>
+				<td><input type="text" th:field="*{count}" class="text count">式</td>
+			</tr>
+			<tr>
+				<th class="cell_title">納入指定日</th>
+				<th>:</th>
+				<td><input type="text" th:field="*{specifieddate}"
+					class="text specifieddate"></td>
+			</tr>
+			<tr>
+				<th class="cell_title">納入日</th>
+				<th>:</th>
+				<td><input type="text" th:field="*{deliverydate}"
+					class="text deliverydate"></td>
+			</tr>
+			<tr>
+				<th class="cell_title">請求日</th>
+				<th>:</th>
+				<td><input type="text" th:field="*{billingdate}"
+					class="text billingdate"></td>
+			</tr>
+			<tr>
+				<th class="cell_title">見積金額</th>
+				<th>:</th>
+				<td><input type="text" th:field="*{quoteprice}"
+					class="text quoteprice"></td>
+			</tr>
+			<tr>
+				<th class="cell_title">受注金額</th>
+				<th>:</th>
+				<td><input type="text" th:field="*{orderprice}"
+					class="text orderprice"></td>
+			</tr>
+
+			<tr>
+				<th class="cell_title">ステータス</th>
+				<th>:</th>
+				<td><input type="text" th:field="*{statusid}"
+					class="text statusid"></td>
+			</tr>
+			<tr>
+				<th class="cell_title">備考</th>
+				<th>:</th>
+				<td><input type="text" th:field="*{note}" class="text note"></td>
+			</tr>
+		</table>
+
+		<div class="leftbtn">
+			<input type="submit" value="確認" class="btn">
+		</div>
+	</form>
+
+	<form th:action="@{/sales/List}">
+		<input type="submit" value="戻る" class="btn rightbtn">
+	</form>
 
 
 </body>

@@ -1,0 +1,18 @@
+@charset "UTF-8";
+body{
+	width:960px;
+	margin: 0 auto;
+}
+table {
+	width: 90%;
+	border-collapse: collapse;
+}
+
+th {
+	background-color: #5B9BD5;
+}
+
+th, td {
+	border: 1px solid #000;
+	height:35px;
+}

@@ -78,6 +78,6 @@ public class Order2 {
 	private String delete_flg;
 
 	public String getCustomerNum() {
-		return (customer.equals(""))?"1":(customer.equals(""))?"2":(customer.equals(""))?"3":"another";
+		return (customer.equals("ビールシステム"))?"1":(customer.equals("ABC"))?"2":(customer.equals("昭和製作所"))?"3":"another";
 	}
 }

@@ -8,8 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.OrderRequest;
-import com.example.demo.dto.OrderUpdateRequest;
-import com.example.demo.entity.Order;
 import com.example.demo.entity.Order2;
 import com.example.demo.repository.OrderRepository;
 
@@ -33,14 +31,14 @@ public class OrderService {
 		return orderRepository.findSeachAll(SeachCustomer, SeachTitle, SeachStatus, pageable);
 	}
 
+	public void create(OrderRequest addOrderRequest) {
+
+	}
+
+	/**
 	public Order findById(int id) {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
-	}
-
-	public void create(OrderRequest addOrderRequest) {
-		// TODO 自動生成されたメソッド・スタブ
-
 	}
 
 	public void update(OrderUpdateRequest editOrderRequest) {
@@ -52,4 +50,5 @@ public class OrderService {
 		// TODO 自動生成されたメソッド・スタブ
 
 	}
+	*/
 }

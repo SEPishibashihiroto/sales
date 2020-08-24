@@ -1,0 +1,12 @@
+@charset "UTF-8";
+body{
+	width:960px;
+	margin: 0 auto;
+}
+table {
+	width: 90%;
+	border-collapse: collapse;
+}
+.cell_title{
+	text-align:right;
+}

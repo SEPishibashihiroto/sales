@@ -1,14 +1,22 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.demo.dto.OrderRequest;
 import com.example.demo.dto.SeachRequest;
 import com.example.demo.entity.Order2;
 import com.example.demo.service.OrderService;
@@ -44,18 +52,18 @@ public class OrderController {
 
 	/**
 	 * 登録画面を表示
-
+	*/
 	@GetMapping(value = "/sales/Add")
 	public String displayAdd(@ModelAttribute("addOrderRequest") OrderRequest addOrderRequest, Model model) {
 		model.addAttribute("addOrderRequest", addOrderRequest);
 		return "sales/Add";
 	}
-	*/
+
 	/**
 	 * 登録エラーチャック
 	 * エラーなし　→　登録確認画面へ
 	 * エラーあり　→　エラー文を持って登録画面へ
-
+	*/
 	@PostMapping(value = "/sales/adderrcheck")
 	public String adderrcheck(@Validated @ModelAttribute("addOrderRequest") OrderRequest addOrderRequest,
 			BindingResult result,
@@ -72,10 +80,10 @@ public class OrderController {
 		model.addAttribute("addOrderRequest", addOrderRequest);
 		return "sales/AddCheck";
 	}
-	*/
+
 	/**
 	 * 登録実行
-
+	*/
 	@PostMapping(value = "/sales/create")
 	public String create(@Validated @ModelAttribute("addUserRequest") OrderRequest addOrderRequest,
 			BindingResult result,
@@ -85,7 +93,7 @@ public class OrderController {
 		orderService.create(addOrderRequest);
 		return "redirect:/sales/List";
 	}
-	*/
+
 	/**
 	 * 編集画面を表示
 

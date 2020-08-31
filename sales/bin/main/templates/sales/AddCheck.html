@@ -15,75 +15,75 @@
 			<tr>
 				<th class="cell_title">顧客</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{customer}" th:field="*{customer}"></span></td>
 				<td><input type="hidden" th:field="*{customerid}"
 					class="text customerid"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">受注日</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{orderdate}" th:field="*{orderdate}"></span></td>
 				<td><input type="hidden" th:field="*{orderdate}" class="text orderdate"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">S番号</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{snumber}" th:field="*{snumber}"></span></td>
 				<td><input type="hidden" th:field="*{snumber}" class="text snumber"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">件名</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{title}" th:field="*{title}"></span></td>
 				<td><input type="hidden" th:field="*{title}" class="text title"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">数量</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{count}" th:field="*{count}"></span></td>
 				<td><input type="hidden" th:field="*{count}" class="text count"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">納入指定日</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{specifieddate}" th:field="*{specifieddate}"></span></td>
 				<td><input type="hidden" th:field="*{specifieddate}" class="text specifieddate"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">納入日</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{deliverydate}" th:field="*{deliverydate}"></span></td>
 				<td><input type="hidden" th:field="*{deliverydate}" class="text deliverydate"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">請求日</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{billingdate}" th:field="*{billingdate}"></span></td>
 				<td><input type="hidden" th:field="*{billingdate}" class="text billingdate"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">見積金額</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{quoteprice}" th:field="*{quoteprice}"></span></td>
 				<td><input type="hidden" th:field="*{quoteprice}" class="text quoteprice"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">受注金額</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{orderprice}" th:field="*{orderprice}"></span></td>
 				<td><input type="hidden" th:field="*{orderprice}" class="text orderprice"></td>
 			</tr>
 
 			<tr>
 				<th class="cell_title">ステータス</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{status}" th:field="*{status}"></span></td>
 				<td><input type="hidden" th:field="*{statusid}" class="text statusid"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">備考</th>
 				<th>:</th>
-				<td><span th:text="*{customerid}" th:field="*{customerid}"></span></td>
+				<td><span th:text="*{note}" th:field="*{note}"></span></td>
 				<td><input type="hidden" th:field="*{note}" class="text note"></td>
 			</tr>
 		</table>
@@ -97,6 +97,7 @@
 		<input type="hidden" th:field="*{customerid}" class="text customerid">
 		<input type="hidden" th:field="*{orderdate}" class="text orderdate">
 		<input type="hidden" th:field="*{snumber}" class="text snumber">
+		<input type="hidden" th:field="*{title}" class="text title">
 		<input type="hidden" th:field="*{count}" class="text count">
 		<input type="hidden" th:field="*{specifieddate}" class="text specifieddate">
 		<input type="hidden" th:field="*{deliverydate}" class="text deliverydate">

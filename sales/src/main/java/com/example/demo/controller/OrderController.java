@@ -20,6 +20,7 @@ import com.example.demo.dto.OrderRequest;
 import com.example.demo.dto.SeachRequest;
 import com.example.demo.entity.Customer;
 import com.example.demo.entity.Order2;
+import com.example.demo.entity.Status;
 import com.example.demo.service.OrderService;
 
 @Controller
@@ -57,7 +58,9 @@ public class OrderController {
 	@GetMapping(value = "/sales/Add")
 	public String displayAdd(@ModelAttribute("addOrderRequest") OrderRequest addOrderRequest, Model model) {
 		List<Customer> customerList = orderService.getCustomer();
+		List<Status> statusList = orderService.getStatus();
 		model.addAttribute("customers", customerList);
+		model.addAttribute("statuses",statusList);
 		model.addAttribute("addOrderRequest", addOrderRequest);
 		return "sales/Add";
 	}
@@ -80,6 +83,8 @@ public class OrderController {
 			model.addAttribute("addOrderRequest", addOrderRequest);
 			return "sales/Add";
 		}
+		List<Customer> customerList = orderService.getCustomer();
+		List<Status> statusList = orderService.getStatus();
 		model.addAttribute("addOrderRequest", addOrderRequest);
 		return "sales/AddCheck";
 	}

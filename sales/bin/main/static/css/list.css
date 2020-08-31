@@ -1,18 +1,107 @@
 @charset "UTF-8";
-body{
-	width:960px;
+
+body {
+	width: 960px;
 	margin: 0 auto;
 }
+
 table {
-	width: 90%;
+	width: 100%;
 	border-collapse: collapse;
 }
 
 th {
 	background-color: #5B9BD5;
+	text-align: center;
 }
 
 th, td {
 	border: 1px solid #000;
-	height:35px;
+	height: 35px;
+}
+
+table ul {
+	padding: 0;
+	margin: auto 0;
+}
+
+table li {
+	list-style: none;
+	padding: 0;
+	margin: auto 0;
+}
+
+.id {
+	width: 29px;
+}
+
+.customer {
+	width: 117px;
+}
+
+.orderdate {
+	width: 107px;
+	text-align: center;
+}
+
+.snumber {
+	width: 65px;
+}
+.count{
+	width:32px;
+}
+.title{
+	width:140px;
+}
+
+.dateul {
+	width: 110px;
+	text-align: center;
+}
+
+.specifieddate {
+	width: 110px;
+}
+
+.deliverydate {
+	width: 110px;
+}
+
+.billingdate {
+	width: 104px;
+	text-align: center;
+}
+
+.priceul {
+	width: 79px;
+	text-align: center;
+}
+
+.quoteprice {
+	width: 79px;
+}
+
+.orderprice {
+	width: 79px;
+}
+
+.status {
+	width: 85px;
+	text-align: center;
+}
+
+.edit, .delete {
+	padding:0;
+	margin:0;
+	width:38px;
+	height:50px;
+}
+
+.tdbtn {
+	width: 40px;
+	height: 36px;
+	background-color: #808080;
+	border: 1px solid #000;
+	padding: 0;
+	color: #000;
 }

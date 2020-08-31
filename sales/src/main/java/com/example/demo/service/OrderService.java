@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.OrderRequest;
 import com.example.demo.entity.Customer;
 import com.example.demo.entity.Order2;
+import com.example.demo.entity.Status;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.OrderRepository;
+import com.example.demo.repository.StatusRepository;
 
 /**
  * ユーザー情報 Service
@@ -28,6 +30,8 @@ public class OrderService {
 	private OrderRepository orderRepository;
 	@Autowired
 	private CustomerRepository customerRepository;
+	@Autowired
+	private StatusRepository statusRepository;
 
 	/**
 	 * ユーザー情報 全検索
@@ -44,9 +48,15 @@ public class OrderService {
 		return customerRepository.findCustomerAll();
 	}
 
+	public List<Status> getStatus() {
+		return statusRepository.findStatusAll();
+	}
+
 	public void create(OrderRequest addOrderRequest) {
 
 	}
+
+
 
 	/**
 	public Order findById(int id) {

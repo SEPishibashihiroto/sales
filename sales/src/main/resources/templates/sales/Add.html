@@ -4,6 +4,7 @@
 <head>
 <title>登録画面</title>
 <link href="/css/input.css" rel="stylesheet"></link>
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
 <meta charset="UTF-8">
 </head>
 <body>
@@ -15,9 +16,11 @@
 			<tr>
 				<th class="cell_title">顧客</th>
 				<th>:</th>
-				<td><select>
+				<td><select name="Customer">
+						<option th:value="bran" th:class="msg"></option>
 						<option th:each="cus : ${customers}" th:object="${cus}"
-							th:value="${cus.customerid}" th:text="*{customer}"></option>
+							th:value="${cus.customerid}" th:text="*{customer}"
+							th:class="${cus.customerid}"></option>
 				</select></td>
 			</tr>
 			<tr>
@@ -76,8 +79,12 @@
 			<tr>
 				<th class="cell_title">ステータス</th>
 				<th>:</th>
-				<td><input type="text" th:field="*{statusid}"
-					class="text statusid"></td>
+				<td><select name="Status">
+						<option class="msg"></option>
+						<option th:each="sta : ${statuses}" th:object="${sta}"
+							th:value="${sta.statusid}" th:text="*{status}"
+							th:class="${sta.customerid}"></option>
+				</select></td>
 			</tr>
 			<tr>
 				<th class="cell_title">備考</th>
@@ -95,6 +102,83 @@
 		<input type="submit" value="戻る" class="btn rightbtn">
 	</form>
 
+
+	<script>
+		$(function() {
+			// 選択されている顧客のクラス名を取得
+			var customerName = $('select[name="Customer"] option:selected')
+					.attr("class");
+			console.log(customerName);
+
+			if (customerName === "msg") {
+				$('select[name="Status"]').prop('disabled', true);
+			} else {
+				$('select[name="Status"]').prop('disabled', false);
+			}
+
+			// 顧客名が変更されたら発動
+			$('select[name="Customer"]')
+					.change(
+							function() {
+
+								// 選択されている顧客のクラス名を取得
+								var customerName = $(
+										'select[name="Customer"] option:selected')
+										.attr("class");
+								console.log(customerName);
+
+								// ステータス名の要素数を取得
+								var count = $('select[name="Status"]')
+										.children().length;
+
+								// ステータス名の要素数分、for文で回す
+								for (var i = 0; i < count; i++) {
+
+									var status = $('select[name="Status"] option:eq('
+											+ i + ')');
+
+									if (status.attr("class") === customerName) {
+										// 選択した顧客と同じクラス名だった場合
+
+										status.show();
+									} else {
+										// 選択した顧客とクラス名が違った場合
+
+										if (status.attr("class") === "msg") {
+											// ブランクだった場合
+
+											status.show(); //ブランクを表示させる
+											status.prop('selected', true); //ブランクを強制的に選択されている状態にする
+										} else {
+											// ブランクでなかった場合
+
+											status.hide();
+										}
+									}
+								}
+							});
+
+			// 顧客名が変更されたら発動
+			$('select[name="Customer"]').change(
+					function() {
+
+						// 選択されている顧客のクラス名を取得
+						var customerName = $(
+								'select[name="Customer"] option:selected')
+								.attr("class");
+
+						var status = $('select[name="Status"] option:eq(0)');
+
+						if (customerName === "msg") {
+							status.show(); //ブランクを表示させる
+							status.prop('selected', true); //ブランクを強制的に選択されている状態にする
+							$('select[name="Status"]').prop('disabled', true);
+						} else {
+							$('select[name="Status"]').prop('disabled', false);
+						}
+					});
+		});
+	</script>
 
 </body>
 </html>

@@ -25,9 +25,17 @@
 					<th>S番号</th>
 					<th>件名</th>
 					<th>数量</th>
-					<th>納入指定日/納入日</th>
+					<th>
+						<ul>
+							<li>納入指定日</li>
+							<li>/納入日</li>
+						</ul>
+					</th>
 					<th>請求日</th>
-					<th>見積金額/受注金額</th>
+					<th><ul>
+							<li>見積金額</li>
+							<li>/受注金額</li>
+						</ul></th>
 					<th>ステータス</th>
 					<th colspan="2"></th>
 				</tr>
@@ -37,20 +45,41 @@
 				<tr th:each="order : ${orders}" th:object="${order}">
 					<td class="id" th:text="*{id}"></td>
 					<td class="customer" th:text="*{customer}"></td>
-					<td class="orderdate" th:if="*{orderdate.equals('')}" th:text="*{orderdate}"></td>
+					<td class="orderdate" th:if="*{orderdate.equals('')}"
+						th:text="*{orderdate}"></td>
 					<td class="orderdate" th:if="*{!(orderdate.equals(''))}"
 						th:text="*{#strings.substring(orderdate,0,4)}+'/'+ *{#strings.substring(orderdate,4,6)}+'/'+ *{#strings.substring(orderdate,6,8)}"></td>
 					<td class="snumber" th:text="'S-' + *{snumber}"></td>
 					<td class="title" th:text="*{title}"></td>
 					<td class="count" th:text="*{count} + '式'"></td>
-					<td class="specifieddate" th:if="*{specifieddate.equals('')&&specifieddate.equals('')}"
-						th:text="*{specifieddate} + ' / ' + *{specifieddate}"></td>
-					<td class="orderdate" th:if="*{!(specifieddate.equals('')&&specifieddate.equals(''))}"
-						th:text="*{#strings.substring(specifieddate,0,4)}+'/'+ *{#strings.substring(specifieddate,4,6)}+'/'+ *{#strings.substring(specifieddate,6,8)}
-								+ ' / ' + *{#strings.substring(specifieddate,0,4)}+'/'+ *{#strings.substring(specifieddate,4,6)}+'/'+ *{#strings.substring(specifieddate,6,8)}"></td>
-					<td class="billingdate" th:text="*{billingdate}"></td>
-					<td class="quoteprice"
-						th:text="*{quoteprice} + ' / ' + *{orderprice}"></td>
+					<td  class="dateul">
+						<ul>
+							<li class="specifieddate"
+								th:if="*{specifieddate.equals('')&&deliverydate.equals('')}"
+								th:text="*{specifieddate}"></li>
+							<li class="deliverydate"
+								th:if="*{specifieddate.equals('')&&deliverydate.equals('')}"
+								th:text="' / ' + *{deliverydate}"></li>
+
+							<li class="specifieddate"
+								th:if="*{!(specifieddate.equals('')&&deliverydate.equals(''))}"
+								th:text="*{#strings.substring(specifieddate,0,4)}+'/'+ *{#strings.substring(specifieddate,4,6)}+'/'+ *{#strings.substring(specifieddate,6,8)}"></li>
+							<li class="deliverydate"
+								th:if="*{!(specifieddate.equals('')&&deliverydate.equals(''))}"
+								th:text="' / ' + *{#strings.substring(deliverydate,0,4)}+'/'+ *{#strings.substring(deliverydate,4,6)}+'/'+ *{#strings.substring(deliverydate,6,8)}"></li>
+						</ul>
+					</td>
+					<td class="billingdate" th:if="*{billingdate.equals('')}"
+						th:text="*{billingdate}"></td>
+					<td class="billingdate" th:if="*{!(billingdate.equals(''))}"
+						th:text="*{#strings.substring(billingdate,0,4)}+'/'+ *{#strings.substring(billingdate,4,6)}+'/'+ *{#strings.substring(billingdate,6,8)}"></td>
+
+					<td  class="priceul">
+						<ul>
+							<li class="quoteprice" th:text="*{quoteprice}"></li>
+							<li class="orderprice" th:text="' / ' + *{orderprice}"></li>
+						</ul>
+					</td>
 					<td class="status" th:text="*{status}"></td>
 
 					<td class="edit">

@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.OrderRequest;
+import com.example.demo.entity.Customer;
 import com.example.demo.entity.Order2;
+import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.OrderRepository;
 
 /**
@@ -22,6 +26,8 @@ public class OrderService {
 	 */
 	@Autowired
 	private OrderRepository orderRepository;
+	@Autowired
+	private CustomerRepository customerRepository;
 
 	/**
 	 * ユーザー情報 全検索
@@ -29,6 +35,13 @@ public class OrderService {
 	 */
 	public Page<Order2> getSeachUsers(String SeachCustomer, String SeachTitle, String SeachStatus, Pageable pageable) {
 		return orderRepository.findSeachAll(SeachCustomer, SeachTitle, SeachStatus, pageable);
+	}
+
+	/**
+	 * 顧客取得
+	 */
+	public List<Customer> getCustomer() {
+		return customerRepository.findCustomerAll();
 	}
 
 	public void create(OrderRequest addOrderRequest) {

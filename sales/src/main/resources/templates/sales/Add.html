@@ -15,8 +15,10 @@
 			<tr>
 				<th class="cell_title">顧客</th>
 				<th>:</th>
-				<td><input type="text" th:field="*{customerid}"
-					class="text customerid"></td>
+				<td><select>
+						<option th:each="cus : ${customers}" th:object="${cus}"
+							th:value="${cus.customerid}" th:text="*{customer}"></option>
+				</select></td>
 			</tr>
 			<tr>
 				<th class="cell_title">受注日</th>

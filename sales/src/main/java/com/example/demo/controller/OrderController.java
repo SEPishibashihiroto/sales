@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.dto.OrderRequest;
 import com.example.demo.dto.SeachRequest;
+import com.example.demo.entity.Customer;
 import com.example.demo.entity.Order2;
 import com.example.demo.service.OrderService;
 
@@ -55,6 +56,8 @@ public class OrderController {
 	*/
 	@GetMapping(value = "/sales/Add")
 	public String displayAdd(@ModelAttribute("addOrderRequest") OrderRequest addOrderRequest, Model model) {
+		List<Customer> customerList = orderService.getCustomer();
+		model.addAttribute("customers", customerList);
 		model.addAttribute("addOrderRequest", addOrderRequest);
 		return "sales/Add";
 	}

@@ -14,9 +14,10 @@ import com.example.demo.entity.Order2;
  */
 @Repository
 public interface OrderRepository extends JpaRepository<Order2, Integer> {
-	@Query(value =
-			"SELECT sales.id,customer.customername AS customer,sales.orderdate,sales.snumber,sales.title,sales.count,sales.specifieddate," +
-			"sales.deliverydate,sales.billingdate,sales.quoteprice,sales.orderprice,status.statusname AS status,sales.delete_flg " +
+	@Query(value = "SELECT sales.id,customer.customername AS customer,sales.orderdate,sales.snumber,sales.title,sales.count,sales.specifieddate,"
+			+
+			"sales.deliverydate,sales.billingdate,sales.quoteprice,sales.orderprice,status.statusname AS status,sales.delete_flg "
+			+
 			"FROM sales ,customer ,status " +
 			"WHERE sales.customerid = customer.customerid " +
 			"AND sales.customerid = status.customerid " +
@@ -27,4 +28,6 @@ public interface OrderRepository extends JpaRepository<Order2, Integer> {
 			"AND sales.delete_flg = 0", nativeQuery = true) // SQL
 	public Page<Order2> findSeachAll(@Param("SeachCustomer") String SeachCustomer,
 			@Param("SeachTitle") String SeachTitle, @Param("SeachStatus") String SeachStatus, Pageable pageable);
+
+
 }

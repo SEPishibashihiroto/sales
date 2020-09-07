@@ -4,32 +4,38 @@
 <head>
 <title>登録確認画面</title>
 <link href="/css/check.css" rel="stylesheet"></link>
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
 <meta charset="UTF-8">
 </head>
 <body>
 	<h1>製造部売上管理システム：案件登録</h1>
 
-	<form action="#" th:action="@{/sales/adderrcheck}"
+	<form action="#" th:action="@{/sales/create}"
 		th:object="${addOrderRequest}" th:method="post">
 		<table>
 			<tr>
 				<th class="cell_title">顧客</th>
 				<th>:</th>
-				<td><span th:text="*{customer}" th:field="*{customer}"></span></td>
-				<td><input type="hidden" th:field="*{customerid}"
-					class="text customerid"></td>
+				<td th:name="Customer"><span th:each="clist : ${clist}"
+					th:object="${clist}" th:text="${clist.customer}"
+					th:class="${clist.customerid}" th:id="${clist.customerid}"
+					th:name="${clist.customerid}"></span></td>
+				<td><input type="hidden" th:id="*{customer}"
+					th:value="*{customer}" class="text customerid" name="selectCus"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">受注日</th>
 				<th>:</th>
 				<td><span th:text="*{orderdate}" th:field="*{orderdate}"></span></td>
-				<td><input type="hidden" th:field="*{orderdate}" class="text orderdate"></td>
+				<td><input type="hidden" th:field="*{orderdate}"
+					class="text orderdate"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">S番号</th>
 				<th>:</th>
 				<td><span th:text="*{snumber}" th:field="*{snumber}"></span></td>
-				<td><input type="hidden" th:field="*{snumber}" class="text snumber"></td>
+				<td><input type="hidden" th:field="*{snumber}"
+					class="text snumber"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">件名</th>
@@ -46,39 +52,49 @@
 			<tr>
 				<th class="cell_title">納入指定日</th>
 				<th>:</th>
-				<td><span th:text="*{specifieddate}" th:field="*{specifieddate}"></span></td>
-				<td><input type="hidden" th:field="*{specifieddate}" class="text specifieddate"></td>
+				<td><span th:text="*{specifieddate}"
+					th:field="*{specifieddate}"></span></td>
+				<td><input type="hidden" th:field="*{specifieddate}"
+					class="text specifieddate"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">納入日</th>
 				<th>:</th>
 				<td><span th:text="*{deliverydate}" th:field="*{deliverydate}"></span></td>
-				<td><input type="hidden" th:field="*{deliverydate}" class="text deliverydate"></td>
+				<td><input type="hidden" th:field="*{deliverydate}"
+					class="text deliverydate"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">請求日</th>
 				<th>:</th>
 				<td><span th:text="*{billingdate}" th:field="*{billingdate}"></span></td>
-				<td><input type="hidden" th:field="*{billingdate}" class="text billingdate"></td>
+				<td><input type="hidden" th:field="*{billingdate}"
+					class="text billingdate"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">見積金額</th>
 				<th>:</th>
 				<td><span th:text="*{quoteprice}" th:field="*{quoteprice}"></span></td>
-				<td><input type="hidden" th:field="*{quoteprice}" class="text quoteprice"></td>
+				<td><input type="hidden" th:field="*{quoteprice}"
+					class="text quoteprice"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">受注金額</th>
 				<th>:</th>
 				<td><span th:text="*{orderprice}" th:field="*{orderprice}"></span></td>
-				<td><input type="hidden" th:field="*{orderprice}" class="text orderprice"></td>
+				<td><input type="hidden" th:field="*{orderprice}"
+					class="text orderprice"></td>
 			</tr>
 
 			<tr>
 				<th class="cell_title">ステータス</th>
 				<th>:</th>
-				<td><span th:text="*{status}" th:field="*{status}"></span></td>
-				<td><input type="hidden" th:field="*{statusid}" class="text statusid"></td>
+				<td name="Status"><span th:each="slist : ${slist}"
+					th:object="${slist}" th:text="${slist.status}"
+					th:class="${slist.customerid}" th:id="${slist.statusid}"
+					th:name="${slist.statusid}"></span></td>
+				<td><input type="hidden" th:id="*{status}"
+					th:value="*{statusid}" class="text statusid" name="selectSta"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">備考</th>
@@ -97,17 +113,49 @@
 		<input type="hidden" th:field="*{customerid}" class="text customerid">
 		<input type="hidden" th:field="*{orderdate}" class="text orderdate">
 		<input type="hidden" th:field="*{snumber}" class="text snumber">
-		<input type="hidden" th:field="*{title}" class="text title">
-		<input type="hidden" th:field="*{count}" class="text count">
-		<input type="hidden" th:field="*{specifieddate}" class="text specifieddate">
-		<input type="hidden" th:field="*{deliverydate}" class="text deliverydate">
-		<input type="hidden" th:field="*{billingdate}" class="text billingdate">
-		<input type="hidden" th:field="*{quoteprice}" class="text quoteprice">
+		<input type="hidden" th:field="*{title}" class="text title"> <input
+			type="hidden" th:field="*{count}" class="text count"> <input
+			type="hidden" th:field="*{specifieddate}" class="text specifieddate">
+		<input type="hidden" th:field="*{deliverydate}"
+			class="text deliverydate"> <input type="hidden"
+			th:field="*{billingdate}" class="text billingdate"> <input
+			type="hidden" th:field="*{quoteprice}" class="text quoteprice">
 		<input type="hidden" th:field="*{orderprice}" class="text orderprice">
 		<input type="hidden" th:field="*{statusid}" class="text statusid">
-		<input type="hidden" th:field="*{note}" class="text note">
-		<input type="submit" value="戻る" class="btn rightbtn">
+		<input type="hidden" th:field="*{note}" class="text note"> <input
+			type="submit" value="戻る" class="btn rightbtn">
 	</form>
+
+	<script>
+		$(function() {
+			var selectC = $('input[name="selectCus"]').attr("id");
+			var selectS = $('input[name="selectSta"]').attr("id");
+			var count1 = $('td[name="Customer"]').children().length;
+			var count2 = $('td[name="Status"]').children().length;
+
+			for (var i = 0; i < count1; i++) {
+
+				var cusotmer = $('td[name="Customer"] span:eq(' + i + ')');
+
+				if (cusotmer.attr("class") === selectC) {
+					cusotmer.show();
+				} else {
+					cusotmer.hide();
+				}
+			}
+
+			for (var i = 0; i < count2; i++) {
+
+				var status = $('td[name="Status"] span:eq(' + i + ')');
+
+				if (status.attr("class") === selectC && status.attr("id") === selectS) {
+					status.show();
+				} else {
+					status.hide();
+				}
+			}
+		});
+	</script>
 
 </body>
 </html>

@@ -14,9 +14,9 @@ import com.example.demo.entity.Order2;
  */
 @Repository
 public interface OrderRepository extends JpaRepository<Order2, Integer> {
-	@Query(value = "SELECT sales.id,customer.customername AS customer,sales.orderdate,sales.snumber,sales.title,sales.count,sales.specifieddate,"
+	@Query(value = "SELECT sales.id,customer.customerid,customer.customername AS customer,sales.orderdate,sales.snumber,sales.title,sales.count,sales.specifieddate,"
 			+
-			"sales.deliverydate,sales.billingdate,sales.quoteprice,sales.orderprice,status.statusname AS status,sales.delete_flg "
+			"sales.deliverydate,sales.billingdate,sales.quoteprice,sales.orderprice,status.statusid,status.statusname AS status,sales.delete_flg "
 			+
 			"FROM sales ,customer ,status " +
 			"WHERE sales.customerid = customer.customerid " +

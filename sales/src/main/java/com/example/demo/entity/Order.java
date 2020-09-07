@@ -77,8 +77,4 @@ public class Order {
 	@Column(name = "status")
 	private String status;
 
-	public String getCustomerNum() {
-		return (customer.equals(""))?"1":(customer.equals(""))?"2":(customer.equals(""))?"3":"another";
-	}
-
 }

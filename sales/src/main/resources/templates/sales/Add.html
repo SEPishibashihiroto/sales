@@ -20,7 +20,9 @@
 						<option th:value="bran" th:class="msg"></option>
 						<option th:each="cus : ${customers}" th:object="${cus}"
 							th:value="${cus.customerid}" th:text="*{customer}"
-							th:class="${cus.customerid}"></option>
+							th:class="${cus.customerid}" th:id="${cus.customerid}" th:name="${cus.customerid}">
+
+							</option>
 				</select></td>
 			</tr>
 			<tr>

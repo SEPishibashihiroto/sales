@@ -60,7 +60,7 @@ public class OrderController {
 		List<Customer> customerList = orderService.getCustomer();
 		List<Status> statusList = orderService.getStatus();
 		model.addAttribute("customers", customerList);
-		model.addAttribute("statuses",statusList);
+		model.addAttribute("statuses", statusList);
 		model.addAttribute("addOrderRequest", addOrderRequest);
 		return "sales/Add";
 	}
@@ -86,6 +86,8 @@ public class OrderController {
 		List<Customer> customerList = orderService.getCustomer();
 		List<Status> statusList = orderService.getStatus();
 		model.addAttribute("addOrderRequest", addOrderRequest);
+		model.addAttribute("clist", customerList);
+		model.addAttribute("slist", statusList);
 		return "sales/AddCheck";
 	}
 
@@ -93,7 +95,7 @@ public class OrderController {
 	 * 登録実行
 	*/
 	@PostMapping(value = "/sales/create")
-	public String create(@Validated @ModelAttribute("addUserRequest") OrderRequest addOrderRequest,
+	public String create(@Validated @ModelAttribute("addOrderRequest") OrderRequest addOrderRequest,
 			BindingResult result,
 			Model model) {
 		// ユーザー情報の登録

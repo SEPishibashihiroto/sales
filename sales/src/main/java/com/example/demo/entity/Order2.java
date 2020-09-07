@@ -17,6 +17,8 @@ public class Order2 {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+	private String customerid;
+
 	/**
 	 * 顧客
 	 */
@@ -67,6 +69,8 @@ public class Order2 {
 	 */
 	private String orderprice;
 
+	private String statusid;
+
 	/**
 	 *ステータス
 	 */
@@ -76,8 +80,4 @@ public class Order2 {
 	 *デリートフラグ
 	 */
 	private String delete_flg;
-
-	public String getCustomerNum() {
-		return (customer.equals("ビールシステム"))?"1":(customer.equals("ABC"))?"2":(customer.equals("昭和製作所"))?"3":"another";
-	}
 }

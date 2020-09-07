@@ -53,10 +53,23 @@ public class OrderService {
 	}
 
 	public void create(OrderRequest addOrderRequest) {
-
+		Order2 order = new Order2();
+		order.setCustomerid(addOrderRequest.getCustomerid());
+		order.setCustomer(addOrderRequest.getCustomer());
+		order.setOrderdate(addOrderRequest.getOrderdate());
+		order.setSnumber(addOrderRequest.getSnumber());
+		order.setTitle(addOrderRequest.getTitle());
+		order.setCount(addOrderRequest.getCount());
+		order.setSpecifieddate(addOrderRequest.getSpecifieddate());
+		order.setDeliverydate(addOrderRequest.getDeliverydate());
+		order.setBillingdate(addOrderRequest.getBillingdate());
+		order.setQuoteprice(addOrderRequest.getQuoteprice());
+		order.setOrderprice(addOrderRequest.getOrderprice());
+		order.setStatusid(addOrderRequest.getStatusid());
+		order.setStatus(addOrderRequest.getStatus());
+		order.setDelete_flg("0");
+		orderRepository.save(order);
 	}
-
-
 
 	/**
 	public Order findById(int id) {

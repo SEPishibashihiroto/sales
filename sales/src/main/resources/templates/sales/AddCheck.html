@@ -22,6 +22,8 @@
 					th:name="${clist.customerid}"></span></td>
 				<td><input type="hidden" th:id="*{customer}"
 					th:value="*{customer}" class="text customerid" name="selectCus"></td>
+				<td><input type="hidden" th:id="*{customer}"
+					th:value="*{customer}" th:class="customerid" th:name="customerid"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">受注日</th>
@@ -89,12 +91,14 @@
 			<tr>
 				<th class="cell_title">ステータス</th>
 				<th>:</th>
-				<td name="Status"><span th:each="slist : ${slist}"
+				<td th:name="Status"><span th:each="slist : ${slist}"
 					th:object="${slist}" th:text="${slist.status}"
 					th:class="${slist.customerid}" th:id="${slist.statusid}"
 					th:name="${slist.statusid}"></span></td>
 				<td><input type="hidden" th:id="*{status}"
-					th:value="*{statusid}" class="text statusid" name="selectSta"></td>
+					th:value="*{status}" class="text statusid" name="selectSta"></td>
+				<td><input type="hidden" th:id="*{status}"
+					th:value="*{status}" th:class="statusid" th:name="statusid"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">備考</th>

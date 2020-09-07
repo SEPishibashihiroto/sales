@@ -14,13 +14,16 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.dto.OrderRequest;
+import com.example.demo.dto.OrderUpdateRequest;
 import com.example.demo.dto.SeachRequest;
 import com.example.demo.entity.Customer;
 import com.example.demo.entity.Order2;
 import com.example.demo.entity.Status;
+import com.example.demo.entity.Update;
 import com.example.demo.service.OrderService;
 
 @Controller
@@ -74,17 +77,20 @@ public class OrderController {
 	public String adderrcheck(@Validated @ModelAttribute("addOrderRequest") OrderRequest addOrderRequest,
 			BindingResult result,
 			Model model) {
+		List<Customer> customerList = orderService.getCustomer();
+		List<Status> statusList = orderService.getStatus();
 		if (result.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : result.getAllErrors()) {
 				errorList.add(error.getDefaultMessage());
 			}
 			model.addAttribute("validationError", errorList);
+			model.addAttribute("clist", customerList);
+			model.addAttribute("slist", statusList);
 			model.addAttribute("addOrderRequest", addOrderRequest);
 			return "sales/Add";
 		}
-		List<Customer> customerList = orderService.getCustomer();
-		List<Status> statusList = orderService.getStatus();
+
 		model.addAttribute("addOrderRequest", addOrderRequest);
 		model.addAttribute("clist", customerList);
 		model.addAttribute("slist", statusList);
@@ -106,42 +112,67 @@ public class OrderController {
 
 	/**
 	 * 編集画面を表示
-
+	*/
 	@GetMapping(value = "/sales/{id}/Edit")
 	public String displayEdit(@PathVariable int id, Model model) {
-		Order order = orderService.findById(id);
+		Update order = orderService.findUpdateById(id);
 		OrderUpdateRequest orderUpdateRequest = new OrderUpdateRequest();
+		orderUpdateRequest.setId(order.getId());
+		orderUpdateRequest.setCustomerid(order.getCustomerid());
+		orderUpdateRequest.setOrderdate(order.getOrderdate());
+		orderUpdateRequest.setSnumber(order.getSnumber());
+		orderUpdateRequest.setTitle(order.getTitle());
+		orderUpdateRequest.setCount(order.getCount());
+		orderUpdateRequest.setSpecifieddate(order.getSpecifieddate());
+		orderUpdateRequest.setDeliverydate(order.getDeliverydate());
+		orderUpdateRequest.setBillingdate(order.getBillingdate());
+		orderUpdateRequest.setQuoteprice(order.getQuoteprice());
+		orderUpdateRequest.setOrderprice(order.getOrderprice());
+		orderUpdateRequest.setStatusid(order.getStatusid());
+		orderUpdateRequest.setDelete_flg(order.getDelete_flg());
+		List<Customer> customerList = orderService.getCustomer();
+		List<Status> statusList = orderService.getStatus();
 
+		model.addAttribute("customers", customerList);
+		model.addAttribute("statuses", statusList);
 		model.addAttribute("editOrderRequest", orderUpdateRequest);
-		return "Address/Edit";
+		return "sales/Edit";
 	}
-	*/
+
 	/**
 	 * 編集エラーチャック
 	 * エラーなし　→　編集確認画面へ
 	 * エラーあり　→　エラー文を持って編集画面へ
-
+	*/
 	@PostMapping(value = "/sales/editerrcheck")
 	public String editerrcheck(@Validated @ModelAttribute("editOrderRequest") OrderUpdateRequest editOrderRequest,
 			BindingResult result,
 			Model model) {
+		List<Customer> customerList = orderService.getCustomer();
+		List<Status> statusList = orderService.getStatus();
 		if (result.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : result.getAllErrors()) {
 				errorList.add(error.getDefaultMessage());
 			}
 			model.addAttribute("validationError", errorList);
+			model.addAttribute("clist", customerList);
+			model.addAttribute("slist", statusList);
 			model.addAttribute("editOrderRequest", editOrderRequest);
 			return "sales/Edit";
 		}
+
+
+		model.addAttribute("clist", customerList);
+		model.addAttribute("slist", statusList);
 		model.addAttribute("editOrderRequest", editOrderRequest);
 		return "sales/EditCheck";
 	}
-	*/
+
 	/**
 	 * 編集実行
-
-	@PostMapping(value = "/Address/update")
+*/
+	@PostMapping(value = "/sales/update")
 	public String update(@Validated @ModelAttribute("editOrderRequest") OrderUpdateRequest editOrderRequest,
 			BindingResult result,
 			Model model) {
@@ -149,26 +180,30 @@ public class OrderController {
 		model.addAttribute("editUserRequest", editOrderRequest);
 
 		orderService.update(editOrderRequest);
-		return "redirect:/Address/List";
+		return "redirect:/sales/List";
 	}
-	*/
+
 	/**
 	 * 削除画面を表示
-
+	*/
 	@GetMapping(value = "/sales/{id}/Delete")
 	public String displayDelete(@PathVariable int id, Model model) {
-		Order order = orderService.findById(id);
+		Update order = orderService.findUpdateById(id);
 		OrderUpdateRequest orderUpdateRequest = new OrderUpdateRequest();
 		orderUpdateRequest.setId(order.getId());
 		orderUpdateRequest.setDelete_flg(order.getDelete_flg());
+		List<Customer> customerList = orderService.getCustomer();
+		List<Status> statusList = orderService.getStatus();
 
+		model.addAttribute("clist", customerList);
+		model.addAttribute("slist", statusList);
 		model.addAttribute("deleteUserRequest", orderUpdateRequest);
 		return "sales/Delete";
 	}
-	*/
+
 	/**
 	 * 削除実行
-
+	*/
 	@PostMapping(value = "/sales/delete")
 	public String delete(@Validated @ModelAttribute("deleteUserRequest") OrderUpdateRequest deleteOrderRequest,
 			BindingResult result,
@@ -182,5 +217,5 @@ public class OrderController {
 		orderService.delete(deleteOrderRequest);
 		return "redirect:/sales/List";
 	}
-	*/
+
 }

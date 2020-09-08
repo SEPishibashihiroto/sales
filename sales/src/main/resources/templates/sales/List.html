@@ -4,15 +4,102 @@
 <head>
 <title>一覧画面</title>
 <link href="/css/list.css" rel="stylesheet"></link>
+<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
 <meta charset="UTF-8">
 </head>
 <body>
 	<h1>製造部売上管理システム：案件一覧</h1>
 
-	<div class="leftmenu">
-		<form th:action="@{/sales/Add}">
-			<input type="submit" value="新規登録" class="btn">
-		</form>
+	<div class="headmenu">
+		<div class="leftmenu">
+			<form th:action="@{/sales/Add}">
+				<input type="submit" value="新規登録" class="btn">
+			</form>
+		</div>
+
+		<div class="rightmenu  seachtable">
+			<form th:action="@{/sales/List}" th:object="${SeachRequest}"
+				th:method="get">
+				<table>
+					<tr>
+						<th class="seachengin">検索</th>
+						<td class="titlecell">顧客</td>
+						<td class="koron">：</td>
+						<td class="inputcell"><select name="SeachCustomer">
+								<option th:value="bran" th:class="msg"></option>
+								<option th:each="cus : ${customers}" th:object="${cus}"
+									th:value="${cus.customerid}" th:text="*{customer}"
+									th:class="${cus.customerid}" th:id="SeachCustomer"
+									th:name="SeachCustomer"></option>
+						</select></td>
+						<td class="titlecell">件名</td>
+						<td class="koron">：</td>
+						<td class="inputcell"><input type="text"
+							th:field="*{SeachTitle}" class="inputbox SeachTitle"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td class="titlecell">ステータス</td>
+						<td class="koron">：</td>
+						<td class="inputcell"><select name="SeachStatus">
+								<option class="msg"></option>
+								<option th:each="sta : ${statuses}" th:object="${sta}"
+									th:value="${sta.statusid}" th:text="*{status}"
+									th:class="${sta.customerid}" th:id="SeachStatus"
+									th:name="SeachStatus"></option>
+						</select></td>
+						<td></td>
+						<td></td>
+						<td class="inputcell"><input type="submit" value="検索"
+							class="seachbtn"></td>
+					</tr>
+				</table>
+
+			</form>
+		</div>
+	</div>
+
+
+	<!-- ページング -->
+	<div class="pagingtop" th:object="${SeachRequest}" th:method="get">
+		<ul>
+			<!-- 最初のページへ << -->
+			<li style="display: inline;"><span th:if="${page.first}">
+					&lt;&lt; </span> <a th:if="${!page.first}"
+				th:href="@{/sales/List(page = 0,SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}">&lt;&lt;
+			</a></li>
+
+			<!-- 前のページへ < -->
+			<li style="display: inline; margin-left: 10px;"><span
+				th:if="${page.first}"> &lt; </span> <a th:if="${!page.first}"
+				th:href="@{/sales/List(page = ${page.number} - 1,SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}">&lt;
+			</a></li>
+
+			<!-- 各ページ作成 1~n -->
+			<li
+				th:each="i : ${page.totalPages <= 5} ? ${#numbers.sequence(0, page.totalPages - 1)}
+				:(${page.last or page.number == page.totalPages - 2} ? ${#numbers.sequence(page.totalPages - 5, page.totalPages - 1)}
+				:(${page.number >= 3}?${#numbers.sequence(page.number - 2, page.number + 2)}
+				: ${#numbers.sequence(0, 4)}))"
+				style="display: inline; margin-left: 10px;"><span
+				th:if="${i} == ${page.number}" th:text="${i + 1 + ' |'}">1</span> <a
+				th:if="${i} != ${page.number}"
+				th:href="@{/sales/List(page = ${i},SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}">
+					<span th:text="${i + 1 + ' |'}">1</span>
+			</a></li>
+
+			<!-- 次のページへ > -->
+			<li style="display: inline; margin-left: 10px;"><span
+				th:if="${page.last}"> &gt; </span> <a th:if="${!page.last}"
+				th:href="@{/sales/List(page = (${page.number} + 1),SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}">&gt;
+			</a></li>
+
+			<!-- 最終ページへ >> -->
+			<li style="display: inline; margin-left: 10px;"><span
+				th:if="${page.last}"> &gt;&gt; </span> <a th:if="${!page.last}"
+				th:href="@{/sales/List(page = (${page.totalPages-1}),SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}">&gt;&gt;
+			</a></li>
+		</ul>
 	</div>
 
 	<div class="listtable">
@@ -52,7 +139,7 @@
 					<td class="snumber" th:text="'S-' + *{snumber}"></td>
 					<td class="title" th:text="*{title}"></td>
 					<td class="count" th:text="*{count} + '式'"></td>
-					<td  class="dateul">
+					<td class="dateul">
 						<ul>
 							<li class="specifieddate"
 								th:if="*{specifieddate.equals('')&&deliverydate.equals('')}"
@@ -74,7 +161,7 @@
 					<td class="billingdate" th:if="*{!(billingdate.equals(''))}"
 						th:text="*{#strings.substring(billingdate,0,4)}+'/'+ *{#strings.substring(billingdate,4,6)}+'/'+ *{#strings.substring(billingdate,6,8)}"></td>
 
-					<td  class="priceul">
+					<td class="priceul">
 						<ul>
 							<li class="quoteprice" th:text="*{quoteprice}"></li>
 							<li class="orderprice" th:text="' / ' + *{orderprice}"></li>
@@ -99,10 +186,133 @@
 		</table>
 	</div>
 
+	<!-- ページング -->
+	<div class="pagingtop" th:object="${SeachRequest}" th:method="get">
+		<ul>
+			<!-- 最初のページへ << -->
+			<li style="display: inline;"><span th:if="${page.first}">
+					&lt;&lt; </span> <a th:if="${!page.first}"
+				th:href="@{/sales/List(page = 0,SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}">&lt;&lt;
+			</a></li>
+
+			<!-- 前のページへ < -->
+			<li style="display: inline; margin-left: 10px;"><span
+				th:if="${page.first}"> &lt; </span> <a th:if="${!page.first}"
+				th:href="@{/sales/List(page = ${page.number} - 1,SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}">&lt;
+			</a></li>
+
+			<!-- 各ページ作成 1~n -->
+			<li
+				th:each="i : ${page.totalPages <= 5} ? ${#numbers.sequence(0, page.totalPages - 1)}
+				:(${page.last or page.number == page.totalPages - 2} ? ${#numbers.sequence(page.totalPages - 5, page.totalPages - 1)}
+				:(${page.number >= 3}?${#numbers.sequence(page.number - 2, page.number + 2)}
+				: ${#numbers.sequence(0, 4)}))"
+				style="display: inline; margin-left: 10px;"><span
+				th:if="${i} == ${page.number}" th:text="${i + 1 + ' |'}">1</span> <a
+				th:if="${i} != ${page.number}"
+				th:href="@{/sales/List(page = ${i},SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}">
+					<span th:text="${i + 1 + ' |'}">1</span>
+			</a></li>
+
+			<!-- 次のページへ > -->
+			<li style="display: inline; margin-left: 10px;"><span
+				th:if="${page.last}"> &gt; </span> <a th:if="${!page.last}"
+				th:href="@{/sales/List(page = (${page.number} + 1),SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}">&gt;
+			</a></li>
+
+			<!-- 最終ページへ >> -->
+			<li style="display: inline; margin-left: 10px;"><span
+				th:if="${page.last}"> &gt;&gt; </span> <a th:if="${!page.last}"
+				th:href="@{/sales/List(page = (${page.totalPages-1}),SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}">&gt;&gt;
+			</a></li>
+		</ul>
+	</div>
+
 	<div>
 		<form th:action="@{/sales/Add}">
 			<input type="submit" value="新規登録" class="btn">
 		</form>
 	</div>
+
+
+	<script>
+		$(function() {
+			// 選択されている顧客のクラス名を取得
+			var customerName = $('select[name="SeachCustomer"] option:selected')
+					.attr("class");
+			console.log(customerName);
+
+			if (customerName === "msg") {
+				$('select[name="SeachStatus"]').prop('disabled', true);
+			} else {
+				$('select[name="SeachStatus"]').prop('disabled', false);
+			}
+
+			// 顧客名が変更されたら発動
+			$('select[name="SeachCustomer"]')
+					.change(
+							function() {
+
+								// 選択されている顧客のクラス名を取得
+								var customerName = $(
+										'select[name="SeachCustomer"] option:selected')
+										.attr("class");
+								console.log(customerName);
+
+								// ステータス名の要素数を取得
+								var count = $('select[name="SeachStatus"]')
+										.children().length;
+
+								// ステータス名の要素数分、for文で回す
+								for (var i = 0; i < count; i++) {
+
+									var status = $('select[name="SeachStatus"] option:eq('
+											+ i + ')');
+
+									if (status.attr("class") === customerName) {
+										// 選択した顧客と同じクラス名だった場合
+
+										status.show();
+									} else {
+										// 選択した顧客とクラス名が違った場合
+
+										if (status.attr("class") === "msg") {
+											// ブランクだった場合
+
+											status.show(); //ブランクを表示させる
+											status.prop('selected', true); //ブランクを強制的に選択されている状態にする
+										} else {
+											// ブランクでなかった場合
+
+											status.hide();
+										}
+									}
+								}
+							});
+
+			// 顧客名が変更されたら発動
+			$('select[name="SeachCustomer"]')
+					.change(
+							function() {
+
+								// 選択されている顧客のクラス名を取得
+								var customerName = $(
+										'select[name="SeachCustomer"] option:selected')
+										.attr("class");
+
+								var status = $('select[name="SeachStatus"] option:eq(0)');
+
+								if (customerName === "msg") {
+									status.show(); //ブランクを表示させる
+									status.prop('selected', true); //ブランクを強制的に選択されている状態にする
+									$('select[name="SeachStatus"]').prop(
+											'disabled', true);
+								} else {
+									$('select[name="SeachStatus"]').prop(
+											'disabled', false);
+								}
+							});
+		});
+	</script>
 </body>
 </html>

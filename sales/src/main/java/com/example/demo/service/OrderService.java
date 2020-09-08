@@ -46,6 +46,10 @@ public class OrderService {
 		return orderRepository.findSeachAll(SeachCustomer, SeachTitle, SeachStatus, pageable);
 	}
 
+	public Page<Order2> getSeachUsers(Pageable pageable) {
+		return orderRepository.findSeachAll(pageable);
+	}
+
 	/**
 	 * 顧客取得
 	 */
@@ -97,52 +101,11 @@ public class OrderService {
 		order.setOrderprice(editOrderRequest.getOrderprice());
 		order.setStatusid(editOrderRequest.getStatusid());
 		order.setDelete_flg(editOrderRequest.getDelete_flg());
-
-//		Order2 order2 = findById(editOrderRequest.getId());
-//		order2.setCustomerid(editOrderRequest.getCustomerid());
-//		order2.setOrderdate(editOrderRequest.getOrderdate());
-//		order2.setSnumber(editOrderRequest.getSnumber());
-//		order2.setTitle(editOrderRequest.getTitle());
-//		order2.setCount(editOrderRequest.getCount());
-//		order2.setSpecifieddate(editOrderRequest.getSpecifieddate());
-//		order2.setDeliverydate(editOrderRequest.getDeliverydate());
-//		order2.setBillingdate(editOrderRequest.getBillingdate());
-//		order2.setQuoteprice(editOrderRequest.getQuoteprice());
-//		order2.setOrderprice(editOrderRequest.getOrderprice());
-//		order2.setStatusid(editOrderRequest.getStatusid());
-//		order2.setDelete_flg(editOrderRequest.getDelete_flg());
 	}
 
 	public void delete(OrderUpdateRequest deleteOrderRequest) {
 		Update order = findUpdateById(deleteOrderRequest.getId());
-		order.setId(deleteOrderRequest.getId());
-		order.setCustomerid(deleteOrderRequest.getCustomerid());
-		order.setOrderdate(deleteOrderRequest.getOrderdate());
-		order.setSnumber(deleteOrderRequest.getSnumber());
-		order.setTitle(deleteOrderRequest.getTitle());
-		order.setCount(deleteOrderRequest.getCount());
-		order.setSpecifieddate(deleteOrderRequest.getSpecifieddate());
-		order.setDeliverydate(deleteOrderRequest.getDeliverydate());
-		order.setBillingdate(deleteOrderRequest.getBillingdate());
-		order.setQuoteprice(deleteOrderRequest.getQuoteprice());
-		order.setOrderprice(deleteOrderRequest.getOrderprice());
-		order.setStatusid(deleteOrderRequest.getStatusid());
 		order.setDelete_flg(deleteOrderRequest.getDelete_flg());
-		updateRepository.save(order);
-
-//		Order2 order2 = findById(deleteOrderRequest.getId());
-//		order2.setCustomerid(deleteOrderRequest.getCustomerid());
-//		order2.setOrderdate(deleteOrderRequest.getOrderdate());
-//		order2.setSnumber(deleteOrderRequest.getSnumber());
-//		order2.setTitle(deleteOrderRequest.getTitle());
-//		order2.setCount(deleteOrderRequest.getCount());
-//		order2.setSpecifieddate(deleteOrderRequest.getSpecifieddate());
-//		order2.setDeliverydate(deleteOrderRequest.getDeliverydate());
-//		order2.setBillingdate(deleteOrderRequest.getBillingdate());
-//		order2.setQuoteprice(deleteOrderRequest.getQuoteprice());
-//		order2.setOrderprice(deleteOrderRequest.getOrderprice());
-//		order2.setStatusid(deleteOrderRequest.getStatusid());
-//		order2.setDelete_flg(deleteOrderRequest.getDelete_flg());
 	}
 
 }

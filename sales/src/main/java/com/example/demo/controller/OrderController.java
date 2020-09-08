@@ -39,12 +39,17 @@ public class OrderController {
 	public String displayList(@PageableDefault(page = 0, size = 10) Pageable pageable, Model model,
 			@ModelAttribute("SeachRequest") SeachRequest SeachRequest) {
 
-		String SeachCustomer = (SeachRequest.getSeachCustomer() == null) ? "" : SeachRequest.getSeachCustomer();
+		String SeachCustomer = (SeachRequest.getSeachCustomer() == null
+				|| SeachRequest.getSeachCustomer().equals("bran")) ? "" : SeachRequest.getSeachCustomer();
 		String SeachTitle = (SeachRequest.getSeachTitle() == null) ? "" : SeachRequest.getSeachTitle();
 		String SeachStatus = (SeachRequest.getSeachStatus() == null) ? "" : SeachRequest.getSeachStatus();
 
-		Page<Order2> userPage = orderService.getSeachUsers(SeachCustomer, SeachTitle, SeachStatus, pageable);
+		Page<Order2> userPage = (SeachCustomer.equals("") && SeachTitle.equals("") && SeachStatus.equals(""))
+				? orderService.getSeachUsers(pageable)
+				: orderService.getSeachUsers(SeachCustomer, SeachTitle, SeachStatus, pageable);
 
+		model.addAttribute("customers", createListC());
+		model.addAttribute("statuses", createListS());
 		model.addAttribute("page", userPage);
 		model.addAttribute("orders", userPage.getContent());
 		model.addAttribute("SeachCustomer", SeachCustomer);
@@ -60,10 +65,8 @@ public class OrderController {
 	*/
 	@GetMapping(value = "/sales/Add")
 	public String displayAdd(@ModelAttribute("addOrderRequest") OrderRequest addOrderRequest, Model model) {
-		List<Customer> customerList = orderService.getCustomer();
-		List<Status> statusList = orderService.getStatus();
-		model.addAttribute("customers", customerList);
-		model.addAttribute("statuses", statusList);
+		model.addAttribute("customers", createListC());
+		model.addAttribute("statuses", createListS());
 		model.addAttribute("addOrderRequest", addOrderRequest);
 		return "sales/Add";
 	}
@@ -77,23 +80,21 @@ public class OrderController {
 	public String adderrcheck(@Validated @ModelAttribute("addOrderRequest") OrderRequest addOrderRequest,
 			BindingResult result,
 			Model model) {
-		List<Customer> customerList = orderService.getCustomer();
-		List<Status> statusList = orderService.getStatus();
 		if (result.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : result.getAllErrors()) {
 				errorList.add(error.getDefaultMessage());
 			}
 			model.addAttribute("validationError", errorList);
-			model.addAttribute("clist", customerList);
-			model.addAttribute("slist", statusList);
+			model.addAttribute("clist", createListC());
+			model.addAttribute("slist", createListS());
 			model.addAttribute("addOrderRequest", addOrderRequest);
 			return "sales/Add";
 		}
 
 		model.addAttribute("addOrderRequest", addOrderRequest);
-		model.addAttribute("clist", customerList);
-		model.addAttribute("slist", statusList);
+		model.addAttribute("clist", createListC());
+		model.addAttribute("slist", createListS());
 		return "sales/AddCheck";
 	}
 
@@ -115,26 +116,10 @@ public class OrderController {
 	*/
 	@GetMapping(value = "/sales/{id}/Edit")
 	public String displayEdit(@PathVariable int id, Model model) {
-		Update order = orderService.findUpdateById(id);
-		OrderUpdateRequest orderUpdateRequest = new OrderUpdateRequest();
-		orderUpdateRequest.setId(order.getId());
-		orderUpdateRequest.setCustomerid(order.getCustomerid());
-		orderUpdateRequest.setOrderdate(order.getOrderdate());
-		orderUpdateRequest.setSnumber(order.getSnumber());
-		orderUpdateRequest.setTitle(order.getTitle());
-		orderUpdateRequest.setCount(order.getCount());
-		orderUpdateRequest.setSpecifieddate(order.getSpecifieddate());
-		orderUpdateRequest.setDeliverydate(order.getDeliverydate());
-		orderUpdateRequest.setBillingdate(order.getBillingdate());
-		orderUpdateRequest.setQuoteprice(order.getQuoteprice());
-		orderUpdateRequest.setOrderprice(order.getOrderprice());
-		orderUpdateRequest.setStatusid(order.getStatusid());
-		orderUpdateRequest.setDelete_flg(order.getDelete_flg());
-		List<Customer> customerList = orderService.getCustomer();
-		List<Status> statusList = orderService.getStatus();
+		OrderUpdateRequest orderUpdateRequest = setValue(id);
 
-		model.addAttribute("customers", customerList);
-		model.addAttribute("statuses", statusList);
+		model.addAttribute("customers", createListC());
+		model.addAttribute("statuses", createListS());
 		model.addAttribute("editOrderRequest", orderUpdateRequest);
 		return "sales/Edit";
 	}
@@ -148,30 +133,27 @@ public class OrderController {
 	public String editerrcheck(@Validated @ModelAttribute("editOrderRequest") OrderUpdateRequest editOrderRequest,
 			BindingResult result,
 			Model model) {
-		List<Customer> customerList = orderService.getCustomer();
-		List<Status> statusList = orderService.getStatus();
 		if (result.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : result.getAllErrors()) {
 				errorList.add(error.getDefaultMessage());
 			}
 			model.addAttribute("validationError", errorList);
-			model.addAttribute("clist", customerList);
-			model.addAttribute("slist", statusList);
+			model.addAttribute("clist", createListC());
+			model.addAttribute("slist", createListS());
 			model.addAttribute("editOrderRequest", editOrderRequest);
 			return "sales/Edit";
 		}
 
-
-		model.addAttribute("clist", customerList);
-		model.addAttribute("slist", statusList);
+		model.addAttribute("clist", createListC());
+		model.addAttribute("slist", createListS());
 		model.addAttribute("editOrderRequest", editOrderRequest);
 		return "sales/EditCheck";
 	}
 
 	/**
 	 * 編集実行
-*/
+	*/
 	@PostMapping(value = "/sales/update")
 	public String update(@Validated @ModelAttribute("editOrderRequest") OrderUpdateRequest editOrderRequest,
 			BindingResult result,
@@ -188,15 +170,10 @@ public class OrderController {
 	*/
 	@GetMapping(value = "/sales/{id}/Delete")
 	public String displayDelete(@PathVariable int id, Model model) {
-		Update order = orderService.findUpdateById(id);
-		OrderUpdateRequest orderUpdateRequest = new OrderUpdateRequest();
-		orderUpdateRequest.setId(order.getId());
-		orderUpdateRequest.setDelete_flg(order.getDelete_flg());
-		List<Customer> customerList = orderService.getCustomer();
-		List<Status> statusList = orderService.getStatus();
+		OrderUpdateRequest orderUpdateRequest = setValue(id);
 
-		model.addAttribute("clist", customerList);
-		model.addAttribute("slist", statusList);
+		model.addAttribute("clist", createListC());
+		model.addAttribute("slist", createListS());
 		model.addAttribute("deleteUserRequest", orderUpdateRequest);
 		return "sales/Delete";
 	}
@@ -216,6 +193,34 @@ public class OrderController {
 
 		orderService.delete(deleteOrderRequest);
 		return "redirect:/sales/List";
+	}
+
+	private List<Customer> createListC() {
+		return orderService.getCustomer();
+	}
+
+	private List<Status> createListS() {
+		return orderService.getStatus();
+	}
+
+	private OrderUpdateRequest setValue(int id) {
+		Update order = orderService.findUpdateById(id);
+		OrderUpdateRequest orderUpdateRequest = new OrderUpdateRequest();
+		orderUpdateRequest.setId(order.getId());
+		orderUpdateRequest.setCustomerid(order.getCustomerid());
+		orderUpdateRequest.setOrderdate(order.getOrderdate());
+		orderUpdateRequest.setSnumber(order.getSnumber());
+		orderUpdateRequest.setTitle(order.getTitle());
+		orderUpdateRequest.setCount(order.getCount());
+		orderUpdateRequest.setSpecifieddate(order.getSpecifieddate());
+		orderUpdateRequest.setDeliverydate(order.getDeliverydate());
+		orderUpdateRequest.setBillingdate(order.getBillingdate());
+		orderUpdateRequest.setQuoteprice(order.getQuoteprice());
+		orderUpdateRequest.setOrderprice(order.getOrderprice());
+		orderUpdateRequest.setStatusid(order.getStatusid());
+		orderUpdateRequest.setDelete_flg(order.getDelete_flg());
+
+		return orderUpdateRequest;
 	}
 
 }

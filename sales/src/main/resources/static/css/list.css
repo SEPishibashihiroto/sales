@@ -5,27 +5,80 @@ body {
 	margin: 0 auto;
 }
 
-table {
+.headmenu {
+	height: 100px;
+	margin:10px 0;
+}
+
+.leftmenu {
+	float: left;
+}
+
+.rightmenu {
+	float: right;
+	margin-right: 93px;
+}
+
+.seachtable table {
+	width: 700px;
+	border-collapse: collapse;
+}
+
+.seachtable th, .seachtable td {
+	height: 35px;
+}
+
+.seachtable select, .inputbox {
+	width: 150px;
+}
+
+.seachbtn {
+	width: 157px;
+	background-color: #808080;
+	border: 1px solid #000;
+	padding: 3px 5px;
+	color: #000;
+}
+
+.seachengin {
+	width: 100px;
+	text-align: center;
+}
+
+.titlecell {
+	width: 90px;
+	text-align: right;
+}
+
+.koron {
+	width: 10px;
+}
+
+.inputcell {
+	width: 200px;
+}
+
+.listtable table {
 	width: 100%;
 	border-collapse: collapse;
 }
 
-th {
+.listtable th {
 	background-color: #5B9BD5;
 	text-align: center;
 }
 
-th, td {
+.listtable th, .listtable td {
 	border: 1px solid #000;
 	height: 35px;
 }
 
-table ul {
+.listtable ul {
 	padding: 0;
 	margin: auto 0;
 }
 
-table li {
+.listtable li {
 	list-style: none;
 	padding: 0;
 	margin: auto 0;
@@ -47,11 +100,13 @@ table li {
 .snumber {
 	width: 65px;
 }
-.count{
-	width:32px;
+
+.count {
+	width: 32px;
 }
-.title{
-	width:140px;
+
+.title {
+	width: 140px;
 }
 
 .dateul {
@@ -91,10 +146,10 @@ table li {
 }
 
 .edit, .delete {
-	padding:0;
-	margin:0;
-	width:38px;
-	height:50px;
+	padding: 0;
+	margin: 0;
+	width: 38px;
+	height: 50px;
 }
 
 .tdbtn {
@@ -104,4 +159,24 @@ table li {
 	border: 1px solid #000;
 	padding: 0;
 	color: #000;
+}
+
+.btn {
+	width: 100px;
+	background-color: #808080;
+	border: 1px solid #000;
+	padding: 3px 5px;
+	color: #000;
+}
+
+.pagingtop ul {
+	padding: 0;
+	margin-top: 10px;
+	margin-bottom: 0;
+}
+
+.pagingbot ul {
+	padding: 0;
+	margin-top: 0;
+	margin-bottom: 10px;
 }

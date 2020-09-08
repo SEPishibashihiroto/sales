@@ -7,13 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.entity.Order2;
+import com.example.demo.entity.Order;
 
 /**
  * ユーザー情報 Repository
  */
 @Repository
-public interface OrderRepository extends JpaRepository<Order2, Integer> {
+public interface OrderRepository extends JpaRepository<Order, Integer> {
 	//検索条件あり
 	@Query(value = "SELECT sales.id,customer.customerid,customer.customername AS customer,sales.orderdate,sales.snumber,sales.title,sales.count,sales.specifieddate,"
 			+
@@ -27,7 +27,7 @@ public interface OrderRepository extends JpaRepository<Order2, Integer> {
 			"AND sales.title LIKE %:SeachTitle% " +
 			"AND sales.statusid LIKE %:SeachStatus% " +
 			"AND sales.delete_flg = 0", nativeQuery = true) // SQL
-	public Page<Order2> findSeachAll(@Param("SeachCustomer") String SeachCustomer,
+	public Page<Order> findSeachAll(@Param("SeachCustomer") String SeachCustomer,
 			@Param("SeachTitle") String SeachTitle, @Param("SeachStatus") String SeachStatus, Pageable pageable);
 
 	//検索条件なし
@@ -40,7 +40,7 @@ public interface OrderRepository extends JpaRepository<Order2, Integer> {
 			"AND sales.customerid = status.customerid " +
 			"AND sales.statusid = status.statusid " +
 			"AND sales.delete_flg = 0", nativeQuery = true) // SQL
-	public Page<Order2> findSeachAll(Pageable pageable);
+	public Page<Order> findSeachAll(Pageable pageable);
 
 
 }

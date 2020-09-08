@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.OrderRequest;
 import com.example.demo.dto.OrderUpdateRequest;
 import com.example.demo.entity.Customer;
-import com.example.demo.entity.Order2;
+import com.example.demo.entity.Order;
 import com.example.demo.entity.Status;
 import com.example.demo.entity.Update;
 import com.example.demo.repository.CustomerRepository;
@@ -27,7 +27,11 @@ import com.example.demo.repository.UpdateRepository;
 @Transactional(rollbackOn = Exception.class)
 public class OrderService {
 	/**
-	 * ユーザー情報 Repository
+	 *  使用するRepository
+	 *  ・OrderRepository     …  一覧表示に使用
+	 *  ・CustomerRepository  …  顧客テーブルから値を取得する際に使用
+	 *  ・StatusRepository    …  ステータステーブルから値を取得する際に使用
+	 *  ・UpdateRepository    …  編集と削除を実行する際に使用
 	 */
 	@Autowired
 	private OrderRepository orderRepository;
@@ -42,11 +46,13 @@ public class OrderService {
 	 * ユーザー情報 全検索
 	 * @return 検索結果
 	 */
-	public Page<Order2> getSeachUsers(String SeachCustomer, String SeachTitle, String SeachStatus, Pageable pageable) {
+	//検索条件あるときに使用
+	public Page<Order> getSeachUsers(String SeachCustomer, String SeachTitle, String SeachStatus, Pageable pageable) {
 		return orderRepository.findSeachAll(SeachCustomer, SeachTitle, SeachStatus, pageable);
 	}
 
-	public Page<Order2> getSeachUsers(Pageable pageable) {
+	//検索条件がないときに使用
+	public Page<Order> getSeachUsers(Pageable pageable) {
 		return orderRepository.findSeachAll(pageable);
 	}
 
@@ -57,10 +63,16 @@ public class OrderService {
 		return customerRepository.findCustomerAll();
 	}
 
+	/**
+	 * ステータス取得
+	 */
 	public List<Status> getStatus() {
 		return statusRepository.findStatusAll();
 	}
 
+	/**
+	 * 登録実行
+	 */
 	public void create(OrderRequest addOrderRequest) {
 		Update order = new Update();
 		order.setCustomerid(addOrderRequest.getCustomerid());
@@ -78,14 +90,16 @@ public class OrderService {
 		updateRepository.save(order);
 	}
 
-	public Order2 findById(int id) {
-		return orderRepository.findById(id).get();
-	}
-
+	/**
+	 * 一覧画面のNo.の番号検索してその番号の情報を取得
+	 */
 	public Update findUpdateById(int id) {
 		return updateRepository.findById(id).get();
 	}
 
+	/**
+	 * 編集を実行
+	 */
 	public void update(OrderUpdateRequest editOrderRequest) {
 		Update order = findUpdateById(editOrderRequest.getId());
 		order.setId(editOrderRequest.getId());
@@ -103,6 +117,9 @@ public class OrderService {
 		order.setDelete_flg(editOrderRequest.getDelete_flg());
 	}
 
+	/**
+	 * 削除を実行(論理削除)
+	 */
 	public void delete(OrderUpdateRequest deleteOrderRequest) {
 		Update order = findUpdateById(deleteOrderRequest.getId());
 		order.setDelete_flg(deleteOrderRequest.getDelete_flg());

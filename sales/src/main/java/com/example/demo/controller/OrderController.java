@@ -21,7 +21,7 @@ import com.example.demo.dto.OrderRequest;
 import com.example.demo.dto.OrderUpdateRequest;
 import com.example.demo.dto.SeachRequest;
 import com.example.demo.entity.Customer;
-import com.example.demo.entity.Order2;
+import com.example.demo.entity.Order;
 import com.example.demo.entity.Status;
 import com.example.demo.entity.Update;
 import com.example.demo.service.OrderService;
@@ -38,13 +38,12 @@ public class OrderController {
 	@GetMapping(value = "/sales/List")
 	public String displayList(@PageableDefault(page = 0, size = 10) Pageable pageable, Model model,
 			@ModelAttribute("SeachRequest") SeachRequest SeachRequest) {
-
 		String SeachCustomer = (SeachRequest.getSeachCustomer() == null
 				|| SeachRequest.getSeachCustomer().equals("bran")) ? "" : SeachRequest.getSeachCustomer();
 		String SeachTitle = (SeachRequest.getSeachTitle() == null) ? "" : SeachRequest.getSeachTitle();
 		String SeachStatus = (SeachRequest.getSeachStatus() == null) ? "" : SeachRequest.getSeachStatus();
 
-		Page<Order2> userPage = (SeachCustomer.equals("") && SeachTitle.equals("") && SeachStatus.equals(""))
+		Page<Order> userPage = (SeachCustomer.equals("") && SeachTitle.equals("") && SeachStatus.equals(""))
 				? orderService.getSeachUsers(pageable)
 				: orderService.getSeachUsers(SeachCustomer, SeachTitle, SeachStatus, pageable);
 
@@ -195,14 +194,17 @@ public class OrderController {
 		return "redirect:/sales/List";
 	}
 
+	//顧客のプルダウン作成に必要なものを取得
 	private List<Customer> createListC() {
 		return orderService.getCustomer();
 	}
 
+	//ステータスのプルダウン作成に必要なものを取得
 	private List<Status> createListS() {
 		return orderService.getStatus();
 	}
 
+	//編集や削除で取得した情報を実行で使用する型に情報をセット
 	private OrderUpdateRequest setValue(int id) {
 		Update order = orderService.findUpdateById(id);
 		OrderUpdateRequest orderUpdateRequest = new OrderUpdateRequest();

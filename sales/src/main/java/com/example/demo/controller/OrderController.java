@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.dto.OrderRequest;
-import com.example.demo.dto.OrderUpdateRequest;
 import com.example.demo.dto.SeachRequest;
+import com.example.demo.dto.addOrderRequest;
 import com.example.demo.entity.Customer;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.Status;
@@ -47,13 +47,17 @@ public class OrderController {
 				? orderService.getSeachUsers(pageable)
 				: orderService.getSeachUsers(SeachCustomer, SeachTitle, SeachStatus, pageable);
 
+		List<Order> list = userPage.getContent();
+		for (Order order : list) {
+			order.setOrderprice("\\" + order.getOrderprice());
+			System.out.println(order.getId() + " : " + order.getOrderprice());
+		}
+
 		model.addAttribute("customers", createListC());
 		model.addAttribute("statuses", createListS());
 		model.addAttribute("page", userPage);
-		model.addAttribute("orders", userPage.getContent());
-		model.addAttribute("SeachCustomer", SeachCustomer);
-		model.addAttribute("SeachTitle", SeachTitle);
-		model.addAttribute("SeachStatus", SeachStatus);
+		model.addAttribute("orders", list);
+		//		model.addAttribute("orders", userPage.getContent());
 		model.addAttribute("SeachRequest", SeachRequest);
 
 		return "sales/List";
@@ -64,9 +68,17 @@ public class OrderController {
 	*/
 	@GetMapping(value = "/sales/Add")
 	public String displayAdd(@ModelAttribute("addOrderRequest") OrderRequest addOrderRequest, Model model) {
+		if (addOrderRequest.getSnumber() != null)
+			addOrderRequest.setSnumber(deletesunmber(addOrderRequest.getSnumber()));
+		if (addOrderRequest.getOrderprice() != null)
+			addOrderRequest.setOrderprice(deletekanma(addOrderRequest.getOrderprice()));
+		if (addOrderRequest.getQuoteprice() != null)
+			addOrderRequest.setQuoteprice(deletekanma(addOrderRequest.getQuoteprice()));
+
 		model.addAttribute("customers", createListC());
 		model.addAttribute("statuses", createListS());
-		model.addAttribute("addOrderRequest", addOrderRequest);
+		model.addAttribute("addOrderRequest",
+				(addOrderRequest.getCustomerid() == null) ? addOrderRequest : setValue(addOrderRequest));
 		return "sales/Add";
 	}
 
@@ -90,6 +102,9 @@ public class OrderController {
 			model.addAttribute("addOrderRequest", addOrderRequest);
 			return "sales/Add";
 		}
+		addOrderRequest.setSnumber(writesunmber(addOrderRequest.getSnumber()));
+		addOrderRequest.setOrderprice(writekanma(addOrderRequest.getOrderprice()));
+		addOrderRequest.setQuoteprice(writekanma(addOrderRequest.getQuoteprice()));
 
 		model.addAttribute("addOrderRequest", addOrderRequest);
 		model.addAttribute("clist", createListC());
@@ -114,12 +129,19 @@ public class OrderController {
 	 * 編集画面を表示
 	*/
 	@GetMapping(value = "/sales/{id}/Edit")
-	public String displayEdit(@PathVariable int id, Model model) {
-		OrderUpdateRequest orderUpdateRequest = setValue(id);
+	public String displayEdit(@Validated @ModelAttribute("editOrderRequest") addOrderRequest editOrderRequest,
+			@PathVariable int id, Model model) {
+		if (editOrderRequest.getSnumber() != null)
+			editOrderRequest.setSnumber(deletesunmber(editOrderRequest.getSnumber()));
+		if (editOrderRequest.getOrderprice() != null)
+			editOrderRequest.setOrderprice(deletekanma(editOrderRequest.getOrderprice()));
+		if (editOrderRequest.getQuoteprice() != null)
+			editOrderRequest.setQuoteprice(deletekanma(editOrderRequest.getQuoteprice()));
 
 		model.addAttribute("customers", createListC());
 		model.addAttribute("statuses", createListS());
-		model.addAttribute("editOrderRequest", orderUpdateRequest);
+		model.addAttribute("editOrderRequest",
+				(editOrderRequest.getCustomerid() == null) ? setValue(id) : setValue(editOrderRequest));
 		return "sales/Edit";
 	}
 
@@ -129,7 +151,7 @@ public class OrderController {
 	 * エラーあり　→　エラー文を持って編集画面へ
 	*/
 	@PostMapping(value = "/sales/editerrcheck")
-	public String editerrcheck(@Validated @ModelAttribute("editOrderRequest") OrderUpdateRequest editOrderRequest,
+	public String editerrcheck(@Validated @ModelAttribute("editOrderRequest") addOrderRequest editOrderRequest,
 			BindingResult result,
 			Model model) {
 		if (result.hasErrors()) {
@@ -143,6 +165,9 @@ public class OrderController {
 			model.addAttribute("editOrderRequest", editOrderRequest);
 			return "sales/Edit";
 		}
+		editOrderRequest.setSnumber(writesunmber(editOrderRequest.getSnumber()));
+		editOrderRequest.setOrderprice(writekanma(editOrderRequest.getOrderprice()));
+		editOrderRequest.setQuoteprice(writekanma(editOrderRequest.getQuoteprice()));
 
 		model.addAttribute("clist", createListC());
 		model.addAttribute("slist", createListS());
@@ -154,7 +179,7 @@ public class OrderController {
 	 * 編集実行
 	*/
 	@PostMapping(value = "/sales/update")
-	public String update(@Validated @ModelAttribute("editOrderRequest") OrderUpdateRequest editOrderRequest,
+	public String update(@Validated @ModelAttribute("editOrderRequest") addOrderRequest editOrderRequest,
 			BindingResult result,
 			Model model) {
 		// ユーザー情報の登録
@@ -169,11 +194,9 @@ public class OrderController {
 	*/
 	@GetMapping(value = "/sales/{id}/Delete")
 	public String displayDelete(@PathVariable int id, Model model) {
-		OrderUpdateRequest orderUpdateRequest = setValue(id);
-
 		model.addAttribute("clist", createListC());
 		model.addAttribute("slist", createListS());
-		model.addAttribute("deleteUserRequest", orderUpdateRequest);
+		model.addAttribute("deleteUserRequest", setValue(id));
 		return "sales/Delete";
 	}
 
@@ -181,12 +204,11 @@ public class OrderController {
 	 * 削除実行
 	*/
 	@PostMapping(value = "/sales/delete")
-	public String delete(@Validated @ModelAttribute("deleteUserRequest") OrderUpdateRequest deleteOrderRequest,
+	public String delete(@Validated @ModelAttribute("deleteUserRequest") addOrderRequest deleteOrderRequest,
 			BindingResult result,
 			Model model) {
-		String deleteflg = "1";
 
-		deleteOrderRequest.setDelete_flg(deleteflg);
+		deleteOrderRequest.setDelete_flg("1");
 
 		model.addAttribute("deleteOrderRequest", deleteOrderRequest);
 
@@ -205,24 +227,89 @@ public class OrderController {
 	}
 
 	//編集や削除で取得した情報を実行で使用する型に情報をセット
-	private OrderUpdateRequest setValue(int id) {
+	private addOrderRequest setValue(int id) {
 		Update order = orderService.findUpdateById(id);
-		OrderUpdateRequest orderUpdateRequest = new OrderUpdateRequest();
+		addOrderRequest orderUpdateRequest = new addOrderRequest();
 		orderUpdateRequest.setId(order.getId());
 		orderUpdateRequest.setCustomerid(order.getCustomerid());
-		orderUpdateRequest.setOrderdate(order.getOrderdate());
+		orderUpdateRequest.setOrderdate(writesura(order.getOrderdate()));
 		orderUpdateRequest.setSnumber(order.getSnumber());
 		orderUpdateRequest.setTitle(order.getTitle());
 		orderUpdateRequest.setCount(order.getCount());
-		orderUpdateRequest.setSpecifieddate(order.getSpecifieddate());
-		orderUpdateRequest.setDeliverydate(order.getDeliverydate());
-		orderUpdateRequest.setBillingdate(order.getBillingdate());
+		orderUpdateRequest.setSpecifieddate(writesura(order.getSpecifieddate()));
+		orderUpdateRequest.setDeliverydate(writesura(order.getDeliverydate()));
+		orderUpdateRequest.setBillingdate(writesura(order.getBillingdate()));
 		orderUpdateRequest.setQuoteprice(order.getQuoteprice());
 		orderUpdateRequest.setOrderprice(order.getOrderprice());
 		orderUpdateRequest.setStatusid(order.getStatusid());
 		orderUpdateRequest.setDelete_flg(order.getDelete_flg());
 
 		return orderUpdateRequest;
+	}
+
+	//編集確認画面から戻るボタンを使用して編集画面に遷移した際に入力情報をセット
+	private addOrderRequest setValue(addOrderRequest OrderUpdateRequest) {
+		addOrderRequest orderUpdateRequest = new addOrderRequest();
+		orderUpdateRequest.setId(OrderUpdateRequest.getId());
+		orderUpdateRequest.setCustomerid(OrderUpdateRequest.getCustomerid());
+		orderUpdateRequest.setOrderdate(OrderUpdateRequest.getOrderdate());
+		orderUpdateRequest.setSnumber(OrderUpdateRequest.getSnumber());
+		orderUpdateRequest.setTitle(OrderUpdateRequest.getTitle());
+		orderUpdateRequest.setCount(OrderUpdateRequest.getCount());
+		orderUpdateRequest.setSpecifieddate(OrderUpdateRequest.getSpecifieddate());
+		orderUpdateRequest.setDeliverydate(OrderUpdateRequest.getDeliverydate());
+		orderUpdateRequest.setBillingdate(OrderUpdateRequest.getBillingdate());
+		orderUpdateRequest.setQuoteprice(OrderUpdateRequest.getQuoteprice());
+		orderUpdateRequest.setOrderprice(OrderUpdateRequest.getOrderprice());
+		orderUpdateRequest.setStatusid(OrderUpdateRequest.getStatusid());
+		orderUpdateRequest.setDelete_flg(OrderUpdateRequest.getDelete_flg());
+		return orderUpdateRequest;
+	}
+
+	//登録確認画面から戻るボタンを使用して登録画面に遷移した際に入力情報をセット
+	private OrderRequest setValue(OrderRequest addOrderRequest) {
+		OrderRequest orderRequest = new OrderRequest();
+		orderRequest.setCustomerid(addOrderRequest.getCustomerid());
+		orderRequest.setOrderdate(addOrderRequest.getOrderdate());
+		orderRequest.setSnumber(addOrderRequest.getSnumber());
+		orderRequest.setTitle(addOrderRequest.getTitle());
+		orderRequest.setCount(addOrderRequest.getCount());
+		orderRequest.setSpecifieddate(addOrderRequest.getSpecifieddate());
+		orderRequest.setDeliverydate(addOrderRequest.getDeliverydate());
+		orderRequest.setBillingdate(addOrderRequest.getBillingdate());
+		orderRequest.setQuoteprice(addOrderRequest.getQuoteprice());
+		orderRequest.setOrderprice(addOrderRequest.getOrderprice());
+		orderRequest.setStatusid(addOrderRequest.getStatusid());
+		return orderRequest;
+	}
+
+	/**
+	 * データ表示において必要なものを挿入したり削除したりする
+	 * */
+	//編集画面の日付に’/’をつける
+	private String writesura(String s) {
+		return s.equals("") ? s : new StringBuilder(s).insert(4, "/").insert(7, "/").toString();
+	}
+
+	//確認画面のS番号に’S-’をつける
+	private String writesunmber(String s) {
+		return s.equals("") ? s : "S-" + s;
+	}
+
+	//登録・編集画面のS番号の’S-’を消す
+	private String deletesunmber(String s) {
+		return (s.lastIndexOf("S-") != -1) ? s.replace("S-", "") : s;
+	}
+
+	//確認画面の金額にカンマと'\'をつける
+	private String writekanma(String s) {
+		return s.equals("") ? s : "\\" + String.format("%,d", Integer.parseInt(s));
+	}
+
+	//登録・編集画面の金額のカンマと'\'を消す
+	private String deletekanma(String s) {
+		s = (s.lastIndexOf(",") != -1) ? s.replace(",", "") : s;
+		return (s.lastIndexOf("\\") != -1) ? s.replace("\\", "") : s;
 	}
 
 }

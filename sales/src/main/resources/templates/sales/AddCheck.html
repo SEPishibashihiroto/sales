@@ -11,7 +11,8 @@
 	<h1>製造部売上管理システム：案件登録</h1>
 
 	<form action="#" th:action="@{/sales/create}"
-		th:object="${addOrderRequest}" th:method="post">
+		th:object="${addOrderRequest}" th:method="post" class="check"
+		name="f1">
 		<table>
 			<tr>
 				<th class="cell_title">顧客</th>
@@ -22,7 +23,7 @@
 					th:name="${clist.customerid}"></span></td>
 				<td><input type="hidden" th:id="*{customer}"
 					th:value="*{customer}" class="text customerid" name="selectCus"></td>
-				<td><input type="hidden" th:id="*{customer}"
+				<td><input type="hidden" th:id="customer"
 					th:value="*{customer}" th:class="customerid" th:name="customerid"></td>
 			</tr>
 			<tr>
@@ -95,10 +96,10 @@
 					th:object="${slist}" th:text="${slist.status}"
 					th:class="${slist.customerid}" th:id="${slist.statusid}"
 					th:name="${slist.statusid}"></span></td>
-				<td><input type="hidden" th:id="*{status}"
-					th:value="*{status}" class="text statusid" name="selectSta"></td>
-				<td><input type="hidden" th:id="*{status}"
-					th:value="*{status}" th:class="statusid" th:name="statusid"></td>
+				<td><input type="hidden" th:id="*{status}" th:value="*{status}"
+					class="text statusid" name="selectSta"></td>
+				<td><input type="hidden" th:id="*{status}" th:value="*{status}"
+					th:class="statusid" th:name="statusid"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">備考</th>
@@ -107,15 +108,18 @@
 				<td><input type="hidden" th:field="*{note}" class="text note"></td>
 			</tr>
 		</table>
+		<br>
 
 		<div class="leftbtn">
-			<input type="submit" value="確認" class="btn">
+			<input type="submit" value="登録" class="btn">
 		</div>
 	</form>
 
-	<form th:action="@{/sales/Add}" th:object="${addOrderRequest}">
-		<input type="hidden" th:field="*{customerid}" class="text customerid">
-		<input type="hidden" th:field="*{orderdate}" class="text orderdate">
+	<form th:action="@{/sales/Add}" th:object="${addOrderRequest}"
+		name="f2">
+		<input type="hidden" th:value="*{customer}" th:id="customerid"
+			th:name="customerid" class="text customerid"> <input
+			type="hidden" th:field="*{orderdate}" class="text orderdate">
 		<input type="hidden" th:field="*{snumber}" class="text snumber">
 		<input type="hidden" th:field="*{title}" class="text title"> <input
 			type="hidden" th:field="*{count}" class="text count"> <input
@@ -125,8 +129,9 @@
 			th:field="*{billingdate}" class="text billingdate"> <input
 			type="hidden" th:field="*{quoteprice}" class="text quoteprice">
 		<input type="hidden" th:field="*{orderprice}" class="text orderprice">
-		<input type="hidden" th:field="*{statusid}" class="text statusid">
-		<input type="hidden" th:field="*{note}" class="text note"> <input
+		<input type="hidden" th:value="*{status}" th:id="statusid"
+			th:name="statusid" class="text statusid"> <input
+			type="hidden" th:field="*{note}" class="text note"> <input
 			type="submit" value="戻る" class="btn rightbtn">
 	</form>
 
@@ -152,7 +157,8 @@
 
 				var status = $('td[name="Status"] span:eq(' + i + ')');
 
-				if (status.attr("class") === selectC && status.attr("id") === selectS) {
+				if (status.attr("class") === selectC
+						&& status.attr("id") === selectS) {
 					status.show();
 				} else {
 					status.hide();

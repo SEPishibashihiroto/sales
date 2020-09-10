@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class OrderUpdateRequest extends OrderRequest {
+public class addOrderRequest extends OrderRequest {
 
 	/**
 	 * 一覧画面のNo.のこと

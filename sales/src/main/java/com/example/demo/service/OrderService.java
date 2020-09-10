@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.OrderRequest;
-import com.example.demo.dto.OrderUpdateRequest;
+import com.example.demo.dto.addOrderRequest;
 import com.example.demo.entity.Customer;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.Status;
@@ -76,15 +76,15 @@ public class OrderService {
 	public void create(OrderRequest addOrderRequest) {
 		Update order = new Update();
 		order.setCustomerid(addOrderRequest.getCustomerid());
-		order.setOrderdate(addOrderRequest.getOrderdate());
-		order.setSnumber(addOrderRequest.getSnumber());
+		order.setOrderdate(deletesura(addOrderRequest.getOrderdate()));
+		order.setSnumber(deletesnumber(addOrderRequest.getSnumber()));
 		order.setTitle(addOrderRequest.getTitle());
 		order.setCount(addOrderRequest.getCount());
-		order.setSpecifieddate(addOrderRequest.getSpecifieddate());
-		order.setDeliverydate(addOrderRequest.getDeliverydate());
-		order.setBillingdate(addOrderRequest.getBillingdate());
-		order.setQuoteprice(addOrderRequest.getQuoteprice());
-		order.setOrderprice(addOrderRequest.getOrderprice());
+		order.setSpecifieddate(deletesura(addOrderRequest.getSpecifieddate()));
+		order.setDeliverydate(deletesura(addOrderRequest.getDeliverydate()));
+		order.setBillingdate(deletesura(addOrderRequest.getBillingdate()));
+		order.setQuoteprice(deletekoron(addOrderRequest.getQuoteprice()));
+		order.setOrderprice(deletekoron(addOrderRequest.getOrderprice()));
 		order.setStatusid(addOrderRequest.getStatusid());
 		order.setDelete_flg("0");
 		updateRepository.save(order);
@@ -100,29 +100,57 @@ public class OrderService {
 	/**
 	 * 編集を実行
 	 */
-	public void update(OrderUpdateRequest editOrderRequest) {
+	public void update(addOrderRequest editOrderRequest) {
 		Update order = findUpdateById(editOrderRequest.getId());
 		order.setId(editOrderRequest.getId());
 		order.setCustomerid(editOrderRequest.getCustomerid());
-		order.setOrderdate(editOrderRequest.getOrderdate());
-		order.setSnumber(editOrderRequest.getSnumber());
+		order.setOrderdate(deletesura(editOrderRequest.getOrderdate()));
+		order.setSnumber(deletesnumber(editOrderRequest.getSnumber()));
 		order.setTitle(editOrderRequest.getTitle());
 		order.setCount(editOrderRequest.getCount());
-		order.setSpecifieddate(editOrderRequest.getSpecifieddate());
-		order.setDeliverydate(editOrderRequest.getDeliverydate());
-		order.setBillingdate(editOrderRequest.getBillingdate());
-		order.setQuoteprice(editOrderRequest.getQuoteprice());
+		order.setSpecifieddate(deletesura(editOrderRequest.getSpecifieddate()));
+		order.setDeliverydate(deletesura(editOrderRequest.getDeliverydate()));
+		order.setBillingdate(deletesura(editOrderRequest.getBillingdate()));
+		order.setQuoteprice(deletekoron(editOrderRequest.getQuoteprice()));
 		order.setOrderprice(editOrderRequest.getOrderprice());
-		order.setStatusid(editOrderRequest.getStatusid());
+		order.setStatusid(deletekoron(editOrderRequest.getStatusid()));
 		order.setDelete_flg(editOrderRequest.getDelete_flg());
+		System.out.println(order);
 	}
 
 	/**
 	 * 削除を実行(論理削除)
 	 */
-	public void delete(OrderUpdateRequest deleteOrderRequest) {
+	public void delete(addOrderRequest deleteOrderRequest) {
 		Update order = findUpdateById(deleteOrderRequest.getId());
+		order.setOrderdate(deletesura(deleteOrderRequest.getOrderdate()));
+		order.setSnumber(deletesnumber(deleteOrderRequest.getSnumber()));
+		order.setSpecifieddate(deletesura(deleteOrderRequest.getSpecifieddate()));
+		order.setDeliverydate(deletesura(deleteOrderRequest.getDeliverydate()));
+		order.setBillingdate(deletesura(deleteOrderRequest.getBillingdate()));
+		order.setBillingdate(deletesura(deleteOrderRequest.getBillingdate()));
+		order.setQuoteprice(deletekoron(deleteOrderRequest.getQuoteprice()));
 		order.setDelete_flg(deleteOrderRequest.getDelete_flg());
+		System.out.println(order);
+	}
+
+	/**
+	 * データベース登録、アップデートにおいて不必要なものを削除する
+	 * */
+	//日付の'/'は不要なため消す
+	private String deletesura(String s) {
+		return (s.equals("")) ? s : s.replace("/", "");
+	}
+
+	//S番号の'S-'は不要なため消す
+	private String deletesnumber(String s) {
+		return (s.lastIndexOf("S-") != -1) ? s.replace("S-", "") : s;
+	}
+
+	//S番号の'S-'は不要なため消す
+	private String deletekoron(String s) {
+		s = (s.lastIndexOf(",") != -1) ? s.replace(",", "") : s;
+		return (s.lastIndexOf("\\") != -1) ? s.replace("\\", "") : s;
 	}
 
 }

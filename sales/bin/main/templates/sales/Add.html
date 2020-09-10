@@ -11,18 +11,20 @@
 	<h1>製造部売上管理システム：案件登録</h1>
 
 	<form action="#" th:action="@{/sales/adderrcheck}"
-		th:object="${addOrderRequest}" th:method="post">
+		th:object="${addOrderRequest}" th:method="post" class="input">
 		<table>
 			<tr>
 				<th class="cell_title">顧客</th>
 				<th>:</th>
-				<td><select name="Customer">
+				<td><select name="Customer" class="text select">
 						<option th:value="bran" th:class="msg"></option>
 						<option th:each="cus : ${customers}" th:object="${cus}"
 							th:value="${cus.customerid}" th:text="*{customer}"
-							th:class="${cus.customerid}" th:id="customerid" th:name="customerid">
-							</option>
+							th:class="${cus.customerid}" th:id="customerid"
+							th:name="customerid"></option>
 				</select></td>
+				<td><input type="hidden" th:id="*{customerid}"
+					th:value="*{customerid}" class="text customerid" name="selectCus"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">受注日</th>
@@ -80,19 +82,22 @@
 			<tr>
 				<th class="cell_title">ステータス</th>
 				<th>:</th>
-				<td><select name="Status">
+				<td><select name="Status" class="text select">
 						<option class="msg"></option>
 						<option th:each="sta : ${statuses}" th:object="${sta}"
 							th:value="${sta.statusid}" th:text="*{status}"
 							th:class="${sta.customerid}"></option>
 				</select></td>
+				<td><input type="hidden" th:id="*{statusid}"
+					th:value="*{statusid}" class="text statusid" name="selectSta"></td>
 			</tr>
 			<tr>
-				<th class="cell_title">備考</th>
-				<th>:</th>
-				<td><input type="text" th:field="*{note}" class="text note"></td>
+				<th class="cell_title notetitle">備考</th>
+				<th class="notetitle">:</th>
+				<td><textarea th:field="*{note}" class="text note"></textarea></td>
 			</tr>
 		</table>
+		<br>
 
 		<div class="leftbtn">
 			<input type="submit" value="確認" class="btn">
@@ -106,27 +111,69 @@
 
 	<script>
 		$(function() {
-			// 選択されている顧客のクラス名を取得
-			var customerName = $('select[name="Customer"] option:selected')
-					.attr("class");
-			console.log(customerName);
 
-			if (customerName === "msg") {
-				$('select[name="Status"]').prop('disabled', true);
-			} else {
-				$('select[name="Status"]').prop('disabled', false);
-			}
+			var selectC = $('input[name="selectCus"]').attr("value");
+			var selectS = $('input[name="selectSta"]').attr("value");
 
-			// 顧客名が変更されたら発動
-			$('select[name="Customer"]')
-					.change(
+			var countC = $('select[name="Customer"]').children().length;
+
+			$(document)
+					.ready(
 							function() {
+								// ページ読み込み時に実行したい処理
+								for (var i = 0; i < countC; i++) {
+									var customer = $('select[name="Customer"] option:eq('
+											+ i + ')');
+									if (customer.attr("class") === selectC) {
+										customer.prop('selected', true);
+									}
+								}
 
 								// 選択されている顧客のクラス名を取得
 								var customerName = $(
 										'select[name="Customer"] option:selected')
 										.attr("class");
 								console.log(customerName);
+
+								if (customerName === "msg") {
+									$('select[name="Status"]').prop('disabled',
+											true);
+								} else {
+									$('select[name="Status"]').prop('disabled',
+											false);
+								}
+
+								// ステータス名の要素数を取得
+								var count = $('select[name="Status"]')
+										.children().length;
+
+								// ステータス名の要素数分、for文で回す
+								for (var i = 0; i < count; i++) {
+
+									var status = $('select[name="Status"] option:eq('
+											+ i + ')');
+
+									if (status.attr("class") === customerName) {
+										// 選択した顧客と同じクラス名だった場合
+										if (status.attr("class") === customerName
+												&& status.attr("value") === selectS) {
+											status.prop('selected', true);
+										}
+										status.show();
+									} else {
+										// 選択した顧客とクラス名が違った場合
+										status.hide();
+									}
+								}
+							});
+
+			// 顧客名が変更されたら発動
+			$('select[name="Customer"]')
+					.change(
+							function() {
+								var customerName = $(
+										'select[name="Customer"] option:selected')
+										.attr("class");
 
 								// ステータス名の要素数を取得
 								var count = $('select[name="Status"]')

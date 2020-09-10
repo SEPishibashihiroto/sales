@@ -26,7 +26,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 			"AND sales.customerid LIKE %:SeachCustomer% " +
 			"AND sales.title LIKE %:SeachTitle% " +
 			"AND sales.statusid LIKE %:SeachStatus% " +
-			"AND sales.delete_flg = 0", nativeQuery = true) // SQL
+			"AND sales.delete_flg = 0 " +
+			"ORDER BY sales.id ASC", nativeQuery = true) // SQL
 	public Page<Order> findSeachAll(@Param("SeachCustomer") String SeachCustomer,
 			@Param("SeachTitle") String SeachTitle, @Param("SeachStatus") String SeachStatus, Pageable pageable);
 
@@ -39,8 +40,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 			"WHERE sales.customerid = customer.customerid " +
 			"AND sales.customerid = status.customerid " +
 			"AND sales.statusid = status.statusid " +
-			"AND sales.delete_flg = 0", nativeQuery = true) // SQL
+			"AND sales.delete_flg = 0 " +
+			"ORDER BY sales.id ASC", nativeQuery = true) // SQL
 	public Page<Order> findSeachAll(Pageable pageable);
-
 
 }

@@ -11,7 +11,7 @@
 	<h1>製造部売上管理システム：案件編集</h1>
 
 	<form action="#" th:action="@{/sales/editerrcheck}"
-		th:object="${editOrderRequest}" th:method="post">
+		th:object="${editOrderRequest}" th:method="post" class="input">
 		<table>
 			<tr>
 				<th class="cell_title">顧客</th>
@@ -23,7 +23,7 @@
 							th:class="${cus.customerid}" th:id="customerid"
 							th:name="customerid"></option>
 				</select></td>
-				<td><input type="hidden" th:id="*{customerid}"
+				<td><input type="hidden" th:id="customerid"
 					th:value="*{customerid}" class="text customerid" name="selectCus"></td>
 			</tr>
 			<tr>
@@ -92,12 +92,14 @@
 					th:value="*{statusid}" class="text statusid" name="selectSta"></td>
 			</tr>
 			<tr>
-				<th class="cell_title">備考</th>
-				<th>:</th>
-				<td><input type="text" th:field="*{note}" class="text note"></td>
+				<th class="cell_title notetitle">備考</th>
+				<th class="notetitle">:</th>
+				<td><textarea th:field="*{note}" class="text note"></textarea></td>
 			</tr>
 		</table>
 		<input type="hidden" th:field="*{id}" th:value="*{id}" class="id">
+		<br>
+
 		<div class="leftbtn">
 			<input type="submit" value="確認" class="btn">
 		</div>
@@ -112,10 +114,11 @@
 
 			var selectC = $('input[name="selectCus"]').attr("value");
 			var selectS = $('input[name="selectSta"]').attr("value");
-			console.log("selectC:" + selectC);
-			console.log("selectS:" + selectS);
 
 			var countC = $('select[name="Customer"]').children().length;
+
+			var customerName;
+			var status;
 
 			$(document)
 					.ready(
@@ -130,10 +133,9 @@
 								}
 
 								// 選択されている顧客のクラス名を取得
-								var customerName = $(
+								customerName = $(
 										'select[name="Customer"] option:selected')
 										.attr("class");
-								console.log(customerName);
 
 								if (customerName === "msg") {
 									$('select[name="Status"]').prop('disabled',
@@ -150,7 +152,7 @@
 								// ステータス名の要素数分、for文で回す
 								for (var i = 0; i < count; i++) {
 
-									var status = $('select[name="Status"] option:eq('
+									status = $('select[name="Status"] option:eq('
 											+ i + ')');
 
 									if (status.attr("class") === customerName) {
@@ -171,7 +173,7 @@
 			$('select[name="Customer"]')
 					.change(
 							function() {
-								var customerName = $(
+								customerName = $(
 										'select[name="Customer"] option:selected')
 										.attr("class");
 
@@ -182,7 +184,7 @@
 								// ステータス名の要素数分、for文で回す
 								for (var i = 0; i < count; i++) {
 
-									var status = $('select[name="Status"] option:eq('
+									status = $('select[name="Status"] option:eq('
 											+ i + ')');
 
 									if (status.attr("class") === customerName) {
@@ -211,11 +213,11 @@
 					function() {
 
 						// 選択されている顧客のクラス名を取得
-						var customerName = $(
+						customerName = $(
 								'select[name="Customer"] option:selected')
 								.attr("class");
 
-						var status = $('select[name="Status"] option:eq(0)');
+						status = $('select[name="Status"] option:eq(0)');
 
 						if (customerName === "msg") {
 							status.show(); //ブランクを表示させる

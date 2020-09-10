@@ -36,8 +36,8 @@ public class OrderController {
 	 * 案件一覧画面を表示
 	 */
 	@GetMapping(value = "/sales/List")
-	public String displayList(@PageableDefault(page = 0, size = 10) Pageable pageable, Model model,
-			@ModelAttribute("SeachRequest") SeachRequest SeachRequest) {
+	public String displayList(@PageableDefault(page = 0, size = 10) Pageable pageable,
+			@ModelAttribute("SeachRequest") SeachRequest SeachRequest, Model model) {
 		String SeachCustomer = (SeachRequest.getSeachCustomer() == null
 				|| SeachRequest.getSeachCustomer().equals("bran")) ? "" : SeachRequest.getSeachCustomer();
 		String SeachTitle = (SeachRequest.getSeachTitle() == null) ? "" : SeachRequest.getSeachTitle();

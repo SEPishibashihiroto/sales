@@ -5,6 +5,8 @@
 <title>一覧画面</title>
 <link href="/css/list.css" rel="stylesheet"></link>
 <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.balloon.js"></script>
 <meta charset="UTF-8">
 </head>
 <body>
@@ -86,8 +88,8 @@
 				style="display: inline; margin-left: 10px;"><span
 				th:if="${i} == ${page.number}" th:text="${i + 1 + ' |'}">1</span> <a
 				th:if="${i} != ${page.number}"
-				th:href="@{/sales/List(page = ${i},SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}">
-					<span th:text="${i + 1 + ' |'}">1</span>
+				th:href="@{/sales/List(page = ${i},SeachCustomer = *{SeachCustomer},SeachTitle = *{SeachTitle},SeachStatus = *{SeachStatus})}"
+				th:title="${i+1}"> <span th:text="${i + 1 + ' |'}">1</span>
 			</a></li>
 
 			<!-- 次のページへ > -->
@@ -104,8 +106,8 @@
 		</ul>
 	</div>
 
-	<div class="listtable">
-		<table>
+	<div class="listtable ">
+		<table class="list">
 			<thead>
 				<tr>
 					<th>No.</th>
@@ -139,7 +141,13 @@
 					<td class="orderdate" th:if="*{!(orderdate.equals(''))}"
 						th:text="*{#strings.substring(orderdate,0,4)}+'/'+ *{#strings.substring(orderdate,4,6)}+'/'+ *{#strings.substring(orderdate,6,8)}"></td>
 					<td class="snumber" th:text="'S-' + *{snumber}"></td>
-					<td class="title" th:text="*{title}"></td>
+
+					<td class="title" th:if="*{(title.length()>6)}"
+						th:text="*{#strings.substring(title,0,5) + '...'}"
+						th:name="*{title}" th:id="title" th:title="*{title}"></td>
+					<td class="title" th:if="*{!(title.length()>6)}" th:text="*{title}"
+						th:name="*{title}" th:id="title" th:title="*{title}"></td>
+
 					<td class="count" th:text="*{count} + '式'"></td>
 					<td class="dateul">
 						<ul>
@@ -158,6 +166,7 @@
 								th:text="' / ' + *{#strings.substring(deliverydate,0,4)}+'/'+ *{#strings.substring(deliverydate,4,6)}+'/'+ *{#strings.substring(deliverydate,6,8)}"></li>
 						</ul>
 					</td>
+
 					<td class="billingdate" th:if="*{billingdate.equals('')}"
 						th:text="*{billingdate}"></td>
 					<td class="billingdate" th:if="*{!(billingdate.equals(''))}"
@@ -167,20 +176,21 @@
 						<ul>
 							<li class="quoteprice"
 								th:if="*{(quoteprice == 0 && orderprice == 0)}"
-								th:text="*{quoteprice}"></li>
+								th:text="'&yen;' + *{quoteprice}"></li>
 							<li class="quoteprice"
 								th:if="*{!(quoteprice == 0 && orderprice == 0)}"
 								th:text="'&yen;' + *{#numbers.formatInteger(quoteprice, 3, 'COMMA')}"></li>
 
 							<li class="orderprice"
 								th:if="*{(quoteprice == 0 && orderprice == 0)}"
-								th:text="*{' / ' + orderprice}"></li>
+								th:text="*{' / ' + '&yen;' +  orderprice}"></li>
 							<li class="orderprice"
 								th:if="*{!(quoteprice == 0 && orderprice == 0)}"
 								th:text="' / ' + '&yen;' + *{#numbers.formatInteger(orderprice, 3, 'COMMA')}"></li>
 
 						</ul>
 					</td>
+
 					<td class="status" th:text="*{status}"></td>
 
 					<td class="edit">
@@ -188,12 +198,15 @@
 							<input type="submit" value="編集" class="tdbtn">
 						</form>
 					</td>
+
 					<td class="delete">
 						<form th:action="@{/sales/{id}/Delete(id=*{id})}">
 							<input type="submit" value="削除" class="tdbtn">
 						</form>
 					</td>
 
+					<td class="fulltitle"><input type="hidden" th:value="*{title}"
+						name="fulltitle" th:class="*{title}"></td>
 				</tr>
 
 			</tbody>
@@ -330,5 +343,21 @@
 							});
 		});
 	</script>
+
+	<script>
+		$(function() {
+			var table = $('table.list');
+			var celltitle = $('.title', table);
+			$('.title', table).hover(function() {
+				$(this).balloon();
+				console.log($(this).attr("name"));
+			});
+		});
+
+		$(function() {
+			$('a').balloon();
+		});
+	</script>
+
 </body>
 </html>

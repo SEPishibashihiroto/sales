@@ -52,12 +52,12 @@ public class OrderRequest {
 	/**
 	 * 見積金額
 	 * */
-	private String quoteprice;
+	private int quoteprice;
 
 	/**
 	 * 受注金額
 	 * */
-	private String orderprice;
+	private int orderprice;
 
 	/**
 	 * ステータスid

@@ -83,8 +83,8 @@ public class OrderService {
 		order.setSpecifieddate(deletesura(addOrderRequest.getSpecifieddate()));
 		order.setDeliverydate(deletesura(addOrderRequest.getDeliverydate()));
 		order.setBillingdate(deletesura(addOrderRequest.getBillingdate()));
-		order.setQuoteprice(deletekoron(addOrderRequest.getQuoteprice()));
-		order.setOrderprice(deletekoron(addOrderRequest.getOrderprice()));
+		order.setQuoteprice(addOrderRequest.getQuoteprice());
+		order.setOrderprice(addOrderRequest.getOrderprice());
 		order.setStatusid(addOrderRequest.getStatusid());
 		order.setDelete_flg("0");
 		updateRepository.save(order);
@@ -111,9 +111,9 @@ public class OrderService {
 		order.setSpecifieddate(deletesura(editOrderRequest.getSpecifieddate()));
 		order.setDeliverydate(deletesura(editOrderRequest.getDeliverydate()));
 		order.setBillingdate(deletesura(editOrderRequest.getBillingdate()));
-		order.setQuoteprice(deletekoron(editOrderRequest.getQuoteprice()));
+		order.setQuoteprice(editOrderRequest.getQuoteprice());
 		order.setOrderprice(editOrderRequest.getOrderprice());
-		order.setStatusid(deletekoron(editOrderRequest.getStatusid()));
+		order.setStatusid(editOrderRequest.getStatusid());
 		order.setDelete_flg(editOrderRequest.getDelete_flg());
 		System.out.println(order);
 	}
@@ -129,7 +129,8 @@ public class OrderService {
 		order.setDeliverydate(deletesura(deleteOrderRequest.getDeliverydate()));
 		order.setBillingdate(deletesura(deleteOrderRequest.getBillingdate()));
 		order.setBillingdate(deletesura(deleteOrderRequest.getBillingdate()));
-		order.setQuoteprice(deletekoron(deleteOrderRequest.getQuoteprice()));
+		order.setQuoteprice(deleteOrderRequest.getQuoteprice());
+		order.setOrderprice(deleteOrderRequest.getOrderprice());
 		order.setDelete_flg(deleteOrderRequest.getDelete_flg());
 		System.out.println(order);
 	}
@@ -145,12 +146,6 @@ public class OrderService {
 	//S番号の'S-'は不要なため消す
 	private String deletesnumber(String s) {
 		return (s.lastIndexOf("S-") != -1) ? s.replace("S-", "") : s;
-	}
-
-	//S番号の'S-'は不要なため消す
-	private String deletekoron(String s) {
-		s = (s.lastIndexOf(",") != -1) ? s.replace(",", "") : s;
-		return (s.lastIndexOf("\\") != -1) ? s.replace("\\", "") : s;
 	}
 
 }

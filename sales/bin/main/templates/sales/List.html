@@ -165,8 +165,20 @@
 
 					<td class="priceul">
 						<ul>
-							<li class="quoteprice" th:text="*{quoteprice}"></li>
-							<li class="orderprice" th:text="' / ' + *{orderprice}"></li>
+							<li class="quoteprice"
+								th:if="*{(quoteprice == 0 && orderprice == 0)}"
+								th:text="*{quoteprice}"></li>
+							<li class="quoteprice"
+								th:if="*{!(quoteprice == 0 && orderprice == 0)}"
+								th:text="'&yen;' + *{#numbers.formatInteger(quoteprice, 3, 'COMMA')}"></li>
+
+							<li class="orderprice"
+								th:if="*{(quoteprice == 0 && orderprice == 0)}"
+								th:text="*{' / ' + orderprice}"></li>
+							<li class="orderprice"
+								th:if="*{!(quoteprice == 0 && orderprice == 0)}"
+								th:text="' / ' + '&yen;' + *{#numbers.formatInteger(orderprice, 3, 'COMMA')}"></li>
+
 						</ul>
 					</td>
 					<td class="status" th:text="*{status}"></td>

@@ -47,16 +47,10 @@ public class OrderController {
 				? orderService.getSeachUsers(pageable)
 				: orderService.getSeachUsers(SeachCustomer, SeachTitle, SeachStatus, pageable);
 
-		List<Order> list = userPage.getContent();
-		for (Order order : list) {
-			order.setOrderprice("\\" + order.getOrderprice());
-			System.out.println(order.getId() + " : " + order.getOrderprice());
-		}
-
 		model.addAttribute("customers", createListC());
 		model.addAttribute("statuses", createListS());
 		model.addAttribute("page", userPage);
-		model.addAttribute("orders", list);
+		model.addAttribute("orders", userPage.getContent());
 		//		model.addAttribute("orders", userPage.getContent());
 		model.addAttribute("SeachRequest", SeachRequest);
 
@@ -70,10 +64,6 @@ public class OrderController {
 	public String displayAdd(@ModelAttribute("addOrderRequest") OrderRequest addOrderRequest, Model model) {
 		if (addOrderRequest.getSnumber() != null)
 			addOrderRequest.setSnumber(deletesunmber(addOrderRequest.getSnumber()));
-		if (addOrderRequest.getOrderprice() != null)
-			addOrderRequest.setOrderprice(deletekanma(addOrderRequest.getOrderprice()));
-		if (addOrderRequest.getQuoteprice() != null)
-			addOrderRequest.setQuoteprice(deletekanma(addOrderRequest.getQuoteprice()));
 
 		model.addAttribute("customers", createListC());
 		model.addAttribute("statuses", createListS());
@@ -103,12 +93,13 @@ public class OrderController {
 			return "sales/Add";
 		}
 		addOrderRequest.setSnumber(writesunmber(addOrderRequest.getSnumber()));
-		addOrderRequest.setOrderprice(writekanma(addOrderRequest.getOrderprice()));
-		addOrderRequest.setQuoteprice(writekanma(addOrderRequest.getQuoteprice()));
 
 		model.addAttribute("addOrderRequest", addOrderRequest);
 		model.addAttribute("clist", createListC());
 		model.addAttribute("slist", createListS());
+
+		model.addAttribute("orderPrice", writekanma(addOrderRequest.getOrderprice()));
+		model.addAttribute("quotePrice", writekanma(addOrderRequest.getQuoteprice()));
 		return "sales/AddCheck";
 	}
 
@@ -133,10 +124,6 @@ public class OrderController {
 			@PathVariable int id, Model model) {
 		if (editOrderRequest.getSnumber() != null)
 			editOrderRequest.setSnumber(deletesunmber(editOrderRequest.getSnumber()));
-		if (editOrderRequest.getOrderprice() != null)
-			editOrderRequest.setOrderprice(deletekanma(editOrderRequest.getOrderprice()));
-		if (editOrderRequest.getQuoteprice() != null)
-			editOrderRequest.setQuoteprice(deletekanma(editOrderRequest.getQuoteprice()));
 
 		model.addAttribute("customers", createListC());
 		model.addAttribute("statuses", createListS());
@@ -166,11 +153,11 @@ public class OrderController {
 			return "sales/Edit";
 		}
 		editOrderRequest.setSnumber(writesunmber(editOrderRequest.getSnumber()));
-		editOrderRequest.setOrderprice(writekanma(editOrderRequest.getOrderprice()));
-		editOrderRequest.setQuoteprice(writekanma(editOrderRequest.getQuoteprice()));
 
 		model.addAttribute("clist", createListC());
 		model.addAttribute("slist", createListS());
+		model.addAttribute("orderPrice", writekanma(editOrderRequest.getOrderprice()));
+		model.addAttribute("quotePrice", writekanma(editOrderRequest.getQuoteprice()));
 		model.addAttribute("editOrderRequest", editOrderRequest);
 		return "sales/EditCheck";
 	}
@@ -194,9 +181,11 @@ public class OrderController {
 	*/
 	@GetMapping(value = "/sales/{id}/Delete")
 	public String displayDelete(@PathVariable int id, Model model) {
+
 		model.addAttribute("clist", createListC());
 		model.addAttribute("slist", createListS());
 		model.addAttribute("deleteUserRequest", setValue(id));
+
 		return "sales/Delete";
 	}
 
@@ -302,14 +291,8 @@ public class OrderController {
 	}
 
 	//確認画面の金額にカンマと'\'をつける
-	private String writekanma(String s) {
-		return s.equals("") ? s : "\\" + String.format("%,d", Integer.parseInt(s));
-	}
-
-	//登録・編集画面の金額のカンマと'\'を消す
-	private String deletekanma(String s) {
-		s = (s.lastIndexOf(",") != -1) ? s.replace(",", "") : s;
-		return (s.lastIndexOf("\\") != -1) ? s.replace("\\", "") : s;
+	private String writekanma(int n) {
+		return n == 0 ? "" + n : "\\" + String.format("%,d", n);
 	}
 
 }

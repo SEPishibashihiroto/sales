@@ -77,14 +77,14 @@
 			<tr>
 				<th class="cell_title">見積金額</th>
 				<th>:</th>
-				<td><span th:text="*{quoteprice}" th:field="*{quoteprice}"></span></td>
+				<td><span th:text="${quotePrice}" th:field="*{quoteprice}"></span></td>
 				<td><input type="hidden" th:field="*{quoteprice}"
 					class="text quoteprice"></td>
 			</tr>
 			<tr>
 				<th class="cell_title">受注金額</th>
 				<th>:</th>
-				<td><span th:text="*{orderprice}" th:field="*{orderprice}"></span></td>
+				<td><span th:text="${orderPrice}" th:field="*{orderprice}"></span></td>
 				<td><input type="hidden" th:field="*{orderprice}"
 					class="text orderprice"></td>
 			</tr>

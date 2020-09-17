@@ -10,6 +10,7 @@
 <body>
 	<h1>製造部売上管理システム：案件登録</h1>
 
+	<!-- 登録画面にて入力されたものが表示される -->
 	<form action="#" th:action="@{/sales/create}"
 		th:object="${addOrderRequest}" th:method="post" class="check"
 		name="f1">
@@ -36,7 +37,7 @@
 			<tr>
 				<th class="cell_title">S番号</th>
 				<th>:</th>
-				<td><span th:text="*{snumber}" th:field="*{snumber}"></span></td>
+				<td><span th:text="${sNumber}" th:field="*{snumber}"></span></td>
 				<td><input type="hidden" th:field="*{snumber}"
 					class="text snumber"></td>
 			</tr>
@@ -110,11 +111,13 @@
 		</table>
 		<br>
 
+		<!-- DBへ登録して一覧画面へ -->
 		<div class="leftbtn">
 			<input type="submit" value="登録" class="btn">
 		</div>
 	</form>
 
+	<!-- 登録画面へ -->
 	<form th:action="@{/sales/Add}" th:object="${addOrderRequest}"
 		name="f2">
 		<input type="hidden" th:value="*{customer}" th:id="customerid"

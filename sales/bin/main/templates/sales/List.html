@@ -13,7 +13,6 @@
 <body>
 	<!-- <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script> -->
 	<h1>製造部売上管理システム：案件一覧</h1>
-
 	<div class="headmenu">
 		<!-- 登録画面へ -->
 		<div class="leftmenu">
@@ -33,7 +32,7 @@
 						<td class="koron">：</td>
 						<td class="inputcell"><select name="SeachCustomer">
 								<option th:value="bran" th:class="msg"></option>
-								<option th:each="cus : ${customers}" th:object="${cus}"
+								<option th:each="cus : ${clist}" th:object="${cus}"
 									th:value="${cus.customerid}" th:text="*{customer}"
 									th:class="${cus.customerid}" th:id="SeachCustomer"
 									th:name="SeachCustomer"></option>
@@ -49,7 +48,7 @@
 						<td class="koron">：</td>
 						<td class="inputcell"><select name="SeachStatus">
 								<option class="msg"></option>
-								<option th:each="sta : ${statuses}" th:object="${sta}"
+								<option th:each="sta : ${slist}" th:object="${sta}"
 									th:value="${sta.statusid}" th:text="*{status}"
 									th:class="${sta.customerid}" th:id="SeachStatus"
 									th:name="SeachStatus"></option>

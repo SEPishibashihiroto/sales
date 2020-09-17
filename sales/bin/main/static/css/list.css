@@ -109,32 +109,6 @@ body {
 	width: 32px;
 }
 
-.title {
-	position: relative;
-}
-
-.pop {
-	position: absolute;
-	top: -30px; left : -15px;
-	display: none;
-	opacity: 0;
-	left: -15px;
-}
-
-.title:hover .pop {
-	display: inline-block;
-	opacity: 1;
-	top: -40px;
-}
-
-.rotate_y {
-	transform: rotateY(90deg);
-}
-/*
-.title:hover{
-	visibility:visible;
-}
-*/
 .dateul {
 	width: 110px;
 	text-align: center;

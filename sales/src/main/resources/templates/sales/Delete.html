@@ -10,6 +10,7 @@
 <body>
 	<h2>下記案件を削除します。よろしいですか？</h2>
 
+	<!-- 一覧画面で表示されているtrタグを論理削除する -->
 	<form action="#" th:action="@{/sales/delete}"
 		th:object="${deleteUserRequest}" th:method="post">
 		<table class="delete">
@@ -53,6 +54,7 @@
 		</div>
 	</form>
 
+	<!-- 一覧画面へ戻る -->
 	<form th:action="@{/sales/List}" th:object="${addOrderRequest}">
 		<input type="submit" value="戻る" class="btn rightbtn">
 	</form>

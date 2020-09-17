@@ -9,6 +9,8 @@
 </head>
 <body>
 	<h1>製造部売上管理システム：案件編集</h1>
+
+	<!-- 編集画面で入力されたものが表示される -->
 	<form action="#" th:action="@{/sales/update}"
 		th:object="${editOrderRequest}" th:method="post" class="check"
 		name="f1">
@@ -35,7 +37,7 @@
 			<tr>
 				<th class="cell_title">S番号</th>
 				<th>:</th>
-				<td><span th:text="*{snumber}" th:field="*{snumber}"></span></td>
+				<td><span th:text="${sNumber}" th:field="*{snumber}"></span></td>
 				<td><input type="hidden" th:field="*{snumber}"
 					class="text snumber"></td>
 			</tr>
@@ -110,11 +112,13 @@
 		<input type="hidden" th:field="*{id}" th:value="*{id}" class="id">
 		<br>
 
+		<!-- DBへアップデートをかけて一覧画面へ -->
 		<div class="leftbtn">
 			<input type="submit" value="編集" class="btn">
 		</div>
 	</form>
 
+	<!-- 編集画面へ戻る -->
 	<form th:action="@{/sales/{id}/Edit(id=*{id})}"
 		th:object="${editOrderRequest}" name="f2">
 		<input type="hidden" th:value="*{customer}" th:id="customerid"
@@ -136,6 +140,7 @@
 	</form>
 
 	<script>
+		//編集画面で選択されたプルダウンの番号に合わせて対応のものを表示
 		$(function() {
 			var selectC = $('input[name="selectCus"]').attr("id");
 			var selectS = $('input[name="selectSta"]').attr("id");

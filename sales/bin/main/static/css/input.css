@@ -14,8 +14,8 @@ table {
 	text-align: right;
 }
 
-.notetitle{
-	vertical-align:top;
+.notetitle {
+	vertical-align: top;
 }
 
 .btn {
@@ -38,31 +38,37 @@ table {
 
 .text {
 	border: 1px solid #000;
-	width:169px;
+	width: 169px;
 	height: 22px;
 }
 
-.snumber{
-	width:40px;
+.snumber {
+	width: 40px;
 }
 
-.title{
-	width:344px;
+.title {
+	width: 344px;
 }
 
-.count{
-	width:38px;
+.count {
+	width: 38px;
 }
 
-.note{
-	width:344px;
-	height:100px;
+.note {
+	width: 344px;
+	height: 100px;
 }
 
-.select{
-	width:175px;
+.select {
+	width: 175px;
 }
 
 .input {
 	margin-left: 100px;
+}
+
+.errmsg ul li {
+	list-style: none;
+	padding: 0;
+	margin: auto 0;
 }

@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.OrderRequest;
-import com.example.demo.dto.addOrderRequest;
+import com.example.demo.dto.OrderUpdateRequest;
 import com.example.demo.entity.Customer;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.Status;
@@ -27,6 +27,9 @@ import com.example.demo.repository.UpdateRepository;
 @Transactional(rollbackOn = Exception.class)
 public class OrderService {
 	/**
+	 *  SQLやDBに関するメソッドを扱う
+	 *  DBやSQLを使用する際に不必要なものを削除するメソッドも含む
+	 *
 	 *  使用するRepository
 	 *  ・OrderRepository     …  一覧表示に使用
 	 *  ・CustomerRepository  …  顧客テーブルから値を取得する際に使用
@@ -77,7 +80,7 @@ public class OrderService {
 		Update order = new Update();
 		order.setCustomerid(addOrderRequest.getCustomerid());
 		order.setOrderdate(deletesura(addOrderRequest.getOrderdate()));
-		order.setSnumber(deletesnumber(addOrderRequest.getSnumber()));
+		order.setSnumber(addOrderRequest.getSnumber());
 		order.setTitle(addOrderRequest.getTitle());
 		order.setCount(addOrderRequest.getCount());
 		order.setSpecifieddate(deletesura(addOrderRequest.getSpecifieddate()));
@@ -100,12 +103,12 @@ public class OrderService {
 	/**
 	 * 編集を実行
 	 */
-	public void update(addOrderRequest editOrderRequest) {
+	public void update(OrderUpdateRequest editOrderRequest) {
 		Update order = findUpdateById(editOrderRequest.getId());
 		order.setId(editOrderRequest.getId());
 		order.setCustomerid(editOrderRequest.getCustomerid());
 		order.setOrderdate(deletesura(editOrderRequest.getOrderdate()));
-		order.setSnumber(deletesnumber(editOrderRequest.getSnumber()));
+		order.setSnumber(editOrderRequest.getSnumber());
 		order.setTitle(editOrderRequest.getTitle());
 		order.setCount(editOrderRequest.getCount());
 		order.setSpecifieddate(deletesura(editOrderRequest.getSpecifieddate()));
@@ -121,10 +124,10 @@ public class OrderService {
 	/**
 	 * 削除を実行(論理削除)
 	 */
-	public void delete(addOrderRequest deleteOrderRequest) {
+	public void delete(OrderUpdateRequest deleteOrderRequest) {
 		Update order = findUpdateById(deleteOrderRequest.getId());
 		order.setOrderdate(deletesura(deleteOrderRequest.getOrderdate()));
-		order.setSnumber(deletesnumber(deleteOrderRequest.getSnumber()));
+		order.setSnumber(deleteOrderRequest.getSnumber());
 		order.setSpecifieddate(deletesura(deleteOrderRequest.getSpecifieddate()));
 		order.setDeliverydate(deletesura(deleteOrderRequest.getDeliverydate()));
 		order.setBillingdate(deletesura(deleteOrderRequest.getBillingdate()));
@@ -141,11 +144,6 @@ public class OrderService {
 	//日付の'/'は不要なため消す
 	private String deletesura(String s) {
 		return (s.equals("")) ? s : s.replace("/", "");
-	}
-
-	//S番号の'S-'は不要なため消す
-	private String deletesnumber(String s) {
-		return (s.lastIndexOf("S-") != -1) ? s.replace("S-", "") : s;
 	}
 
 }

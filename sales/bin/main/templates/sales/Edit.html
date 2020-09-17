@@ -10,6 +10,14 @@
 <body>
 	<h1>製造部売上管理システム：案件編集</h1>
 
+	<!-- エラー文があればここに表示 -->
+	<table th:if="${validationError}">
+		<tr th:each="error : ${validationError}">
+			<td style="color: red;" th:text="${error}"></td>
+		</tr>
+	</table>
+
+	<!-- データ入力箇所 -->
 	<form action="#" th:action="@{/sales/editerrcheck}"
 		th:object="${editOrderRequest}" th:method="post" class="input">
 		<table>
@@ -18,7 +26,7 @@
 				<th>:</th>
 				<td><select name="Customer">
 						<option th:value="bran" th:class="msg"></option>
-						<option th:each="cus : ${customers}" th:object="${cus}"
+						<option th:each="cus : ${clist}" th:object="${cus}"
 							th:value="${cus.customerid}" th:text="*{customer}"
 							th:class="${cus.customerid}" th:id="customerid"
 							th:name="customerid"></option>
@@ -84,7 +92,7 @@
 				<th>:</th>
 				<td><select name="Status">
 						<option class="msg"></option>
-						<option th:each="sta : ${statuses}" th:object="${sta}"
+						<option th:each="sta : ${slist}" th:object="${sta}"
 							th:value="${sta.statusid}" th:text="*{status}"
 							th:class="${sta.customerid}"></option>
 				</select></td>
@@ -100,11 +108,13 @@
 		<input type="hidden" th:field="*{id}" th:value="*{id}" class="id">
 		<br>
 
+		<!-- 登録確認画面へ進む -->
 		<div class="leftbtn">
 			<input type="submit" value="確認" class="btn">
 		</div>
 	</form>
 
+	<!-- 一覧画面へ戻る -->
 	<form th:action="@{/sales/List}">
 		<input type="submit" value="戻る" class="btn rightbtn">
 	</form>
@@ -120,6 +130,7 @@
 			var customerName;
 			var status;
 
+			//読み込んだ際に一覧画面にて表示されていたものを選択させる
 			$(document)
 					.ready(
 							function() {

@@ -24,7 +24,7 @@
 			<tr>
 				<th class="cell_title">顧客</th>
 				<th>:</th>
-				<td><select name="Customer">
+				<td><select name="Customer" class="text select">
 						<option th:value="bran" th:class="msg"></option>
 						<option th:each="cus : ${clist}" th:object="${cus}"
 							th:value="${cus.customerid}" th:text="*{customer}"
@@ -90,7 +90,7 @@
 			<tr>
 				<th class="cell_title">ステータス</th>
 				<th>:</th>
-				<td><select name="Status">
+				<td><select name="Status" class="text select">
 						<option class="msg"></option>
 						<option th:each="sta : ${slist}" th:object="${sta}"
 							th:value="${sta.statusid}" th:text="*{status}"

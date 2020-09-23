@@ -13,6 +13,7 @@
 <body>
 	<!-- <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script> -->
 	<h1>製造部売上管理システム：案件一覧</h1>
+
 	<div class="headmenu">
 		<!-- 登録画面へ -->
 		<div class="leftmenu">
@@ -137,10 +138,8 @@
 				<tr th:each="order : ${orders}" th:object="${order}">
 					<td class="id" th:text="*{id}"></td>
 					<td class="customer" th:text="*{customer}"></td>
-					<td class="orderdate" th:if="*{orderdate.equals('')}"
-						th:text="*{orderdate}"></td>
-					<td class="orderdate" th:if="*{!(orderdate.equals(''))}"
-						th:text="*{#strings.substring(orderdate,0,4)}+'/'+ *{#strings.substring(orderdate,4,6)}+'/'+ *{#strings.substring(orderdate,6,8)}"></td>
+					<td class="orderdate"
+						th:text="*{#strings.replace(orderdate, '-', '/')}"></td>
 					<td class="snumber" th:text="'S-' + *{snumber}"></td>
 
 					<td class="title" th:if="*{(title.length()>6)}"
@@ -153,25 +152,14 @@
 					<td class="dateul">
 						<ul>
 							<li class="specifieddate"
-								th:if="*{specifieddate.equals('')&&deliverydate.equals('')}"
-								th:text="*{specifieddate}"></li>
+								th:text="*{#strings.replace(specifieddate, '-', '/')}"></li>
 							<li class="deliverydate"
-								th:if="*{specifieddate.equals('')&&deliverydate.equals('')}"
-								th:text="' / ' + *{deliverydate}"></li>
-
-							<li class="specifieddate"
-								th:if="*{!(specifieddate.equals('')&&deliverydate.equals(''))}"
-								th:text="*{#strings.substring(specifieddate,0,4)}+'/'+ *{#strings.substring(specifieddate,4,6)}+'/'+ *{#strings.substring(specifieddate,6,8)}"></li>
-							<li class="deliverydate"
-								th:if="*{!(specifieddate.equals('')&&deliverydate.equals(''))}"
-								th:text="' / ' + *{#strings.substring(deliverydate,0,4)}+'/'+ *{#strings.substring(deliverydate,4,6)}+'/'+ *{#strings.substring(deliverydate,6,8)}"></li>
+								th:text="' / ' + *{#strings.replace(deliverydate, '-', '/')}"></li>
 						</ul>
 					</td>
 
-					<td class="billingdate" th:if="*{billingdate.equals('')}"
-						th:text="*{billingdate}"></td>
-					<td class="billingdate" th:if="*{!(billingdate.equals(''))}"
-						th:text="*{#strings.substring(billingdate,0,4)}+'/'+ *{#strings.substring(billingdate,4,6)}+'/'+ *{#strings.substring(billingdate,6,8)}"></td>
+					<td class="billingdate"
+						th:text="*{#strings.replace(billingdate, '-', '/')}"></td>
 
 					<td class="priceul">
 						<ul>
@@ -348,7 +336,7 @@
 	<script>
 		$(function() {
 			$('.title', $('table.list')).balloon({
-				// 吹き出しを右に出すと画面の邪魔にならない場合が多いです
+				// 吹き出しを対象の上に作成
 				position : "null",
 				// 吹き出し端に付く正三角形のサイズ（高さ）
 				tipSize : 20,

@@ -106,6 +106,13 @@ public class VariousService {
 		/**
 		 * 受注日に関するエラー
 		 * */
+		if (!(request.getOrderdate().equals(""))) {
+			if (!(request.getOrderdate().matches("^\\d{4}/\\d{2}/\\d{2}$")
+					&& chackDayData(request.getOrderdate()))) {
+				errorList.add(getErrorMessage(1));
+			}
+		}
+
 		/**
 		 * S番号に関するエラー
 		 **/
@@ -128,21 +135,40 @@ public class VariousService {
 		/**
 		 * 数量に関するエラー
 		 *
+		 */
 		if (!(request.getCount().equals(""))) {
-			if (isInt(request.getCount())) {
+			if (!(isInt(request.getCount()))) {
 				errorList.add(getErrorMessage(6));
 			}
 		}
-		*/
+
 		/**
 		 * 納入指定日に関するエラー
 		 * */
+		if (!(request.getSpecifieddate().equals(""))) {
+			if (!(request.getSpecifieddate().matches("^\\d{4}/\\d{2}/\\d{2}$")
+					&& chackDayData(request.getSpecifieddate()))) {
+				errorList.add(getErrorMessage(7));
+			}
+		}
 		/**
 		 * 納入日に関するエラー
 		 * */
+		if (!(request.getDeliverydate().equals(""))) {
+			if (!(request.getDeliverydate().matches("^\\d{4}/\\d{2}/\\d{2}$")
+					&& chackDayData(request.getDeliverydate()))) {
+				errorList.add(getErrorMessage(8));
+			}
+		}
 		/**
 		 * 請求日に関するエラー
 		 * */
+		if (!(request.getBillingdate().equals(""))) {
+			if (!(request.getBillingdate().matches("^\\d{4}/\\d{2}/\\d{2}$")
+					&& chackDayData(request.getBillingdate()))) {
+				errorList.add(getErrorMessage(9));
+			}
+		}
 		/**
 		 * 見積金額に関するエラー
 		 * */
@@ -231,12 +257,107 @@ public class VariousService {
 		request.setStatusid(request.getStatus());
 	}
 
+	//入力された日付が正しい日付かどうか
+	private boolean chackDayData(String s) {
+		return ismonth(s) && isday(createdays(s), s);
+	}
+
+	//対応した月の日付表を渡す
+	private int[] createdays(String s) {
+		char[] chars = createCharList(s);
+		int nen = 0;
+		for (int i = 0; i < 4; i++) {
+			nen *= 10;
+			nen += Integer.parseUnsignedInt("" + chars[i]);
+		}
+		System.out.println("nen ; " + nen);
+		int month = 0;
+		for (int i = 4; i < 6; i++) {
+			month *= 10;
+			month += Integer.parseUnsignedInt("" + chars[i]);
+		}
+		System.out.println("month : " + month);
+		int[] days;
+		switch (month) {
+		case 1:
+		case 3:
+		case 5:
+		case 7:
+		case 8:
+		case 10:
+		case 12:
+			days = new int[31];
+			for (int i = 0; i < days.length; i++) {
+				days[i] = i + 1;
+			}
+			return days;
+		case 2:
+			if (nen % 4 == 0) {
+				days = new int[29];
+			} else {
+				days = new int[28];
+			}
+			for (int i = 0; i < days.length; i++) {
+				days[i] = i + 1;
+			}
+			return days;
+
+		case 4:
+		case 6:
+		case 9:
+		case 11:
+			days = new int[30];
+			for (int i = 0; i < days.length; i++) {
+				days[i] = i + 1;
+			}
+			return days;
+		}
+		return null;
+	}
+
+	//入力された日付の「日」が正しいかどうか
+	private boolean isday(int[] list, String s) {
+		char[] chars = createCharList(s);
+		int day = 0;
+		for (int i = 6; i < chars.length; i++) {
+			day *= 10;
+			day += Integer.parseUnsignedInt("" + chars[i]);
+		}
+		System.out.println("day : " + day);
+		for (int listdays : list) {
+			if (listdays == day) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//入力された日付の「月」が正しいかどうか
+	private boolean ismonth(String s) {
+		char[] chars = createCharList(s);
+		int month = 0;
+		for (int i = 4; i < 6; i++) {
+			month *= 10;
+			month += Integer.parseUnsignedInt("" + chars[i]);
+		}
+		for (int i = 1; i <= 12; i++) {
+			if (i == month) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private char[] createCharList(String s) {
+		return s.replaceAll("/", "").toCharArray();
+	}
+
 	/**
 	 * データ表示において必要なものを挿入したり削除したりする
 	 * */
 	//編集画面の日付に’/’をつける
 	private String writesura(String s) {
-		return s.equals("") ? s : new StringBuilder(s).insert(4, "/").insert(7, "/").toString();
+		return s.equals("") ? s : s.replaceAll("-", "/");
 	}
 
 	//確認画面のS番号に’S-’をつける

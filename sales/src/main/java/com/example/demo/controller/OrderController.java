@@ -152,7 +152,7 @@ public class OrderController {
 	@GetMapping(value = "/sales/{id}/Delete")
 	public String displayDelete(@PathVariable int id, Model model) {
 		variousService.addListModel(model);
-		model.addAttribute("deleteUserRequest", variousService.setValue(id));
+		model.addAttribute("deleteOrderRequest", variousService.setValue(id));
 		return "sales/Delete";
 	}
 
@@ -160,7 +160,7 @@ public class OrderController {
 	 * 削除実行
 	*/
 	@PostMapping(value = "/sales/delete")
-	public String delete(@Validated @ModelAttribute("deleteUserRequest") OrderUpdateRequest deleteOrderRequest,
+	public String delete(@Validated @ModelAttribute("deleteOrderRequest") OrderUpdateRequest deleteOrderRequest,
 			BindingResult result,
 			Model model) {
 		deleteOrderRequest.setDelete_flg("1");

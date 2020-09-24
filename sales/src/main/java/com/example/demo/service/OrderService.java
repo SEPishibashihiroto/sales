@@ -90,6 +90,7 @@ public class OrderService {
 		order.setOrderprice(addOrderRequest.getOrderprice());
 		order.setStatusid(addOrderRequest.getStatusid());
 		order.setDelete_flg("0");
+		order.setNote(addOrderRequest.getNote());
 		updateRepository.save(order);
 	}
 
@@ -118,7 +119,7 @@ public class OrderService {
 		order.setOrderprice(editOrderRequest.getOrderprice());
 		order.setStatusid(editOrderRequest.getStatusid());
 		order.setDelete_flg(editOrderRequest.getDelete_flg());
-		System.out.println(order);
+		order.setNote(editOrderRequest.getNote());
 	}
 
 	/**
@@ -126,16 +127,7 @@ public class OrderService {
 	 */
 	public void delete(OrderUpdateRequest deleteOrderRequest) {
 		Update order = findUpdateById(deleteOrderRequest.getId());
-		order.setOrderdate(deletesura(deleteOrderRequest.getOrderdate()));
-		order.setSnumber(deleteOrderRequest.getSnumber());
-		order.setSpecifieddate(deletesura(deleteOrderRequest.getSpecifieddate()));
-		order.setDeliverydate(deletesura(deleteOrderRequest.getDeliverydate()));
-		order.setBillingdate(deletesura(deleteOrderRequest.getBillingdate()));
-		order.setBillingdate(deletesura(deleteOrderRequest.getBillingdate()));
-		order.setQuoteprice(deleteOrderRequest.getQuoteprice());
-		order.setOrderprice(deleteOrderRequest.getOrderprice());
 		order.setDelete_flg(deleteOrderRequest.getDelete_flg());
-		System.out.println(order);
 	}
 
 	/**

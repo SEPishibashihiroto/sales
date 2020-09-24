@@ -54,6 +54,7 @@ public class VariousService {
 		orderUpdateRequest.setOrderprice(order.getOrderprice());
 		orderUpdateRequest.setStatusid(order.getStatusid());
 		orderUpdateRequest.setDelete_flg(order.getDelete_flg());
+		orderUpdateRequest.setNote(order.getNote());
 
 		return orderUpdateRequest;
 	}
@@ -257,7 +258,16 @@ public class VariousService {
 		request.setStatusid(request.getStatus());
 	}
 
-	//入力された日付が正しい日付かどうか
+	/**入力された日付が正しい日付かどうか
+	 * String s … 入力された日付データ
+	 * ismonth … sを渡してsの月の部分を取り出し、1～12であるかどうかを確認
+	 * createdays … sを渡してsの年と月の部分を確認してそれに対応した月の一日から最終日までの配列を返す
+	 * isday … sとcreatedaysで作成した配列を渡して
+	 *          sの日の部分を取り出し、配列と同じものがあるかどうかを確認
+	 *
+	 * ismonthとisdayがどちらもtrueであれば適正な日付データであると判断し、trueを返す
+	 * そうでなければfalseを返す
+	 */
 	private boolean chackDayData(String s) {
 		return ismonth(s) && isday(createdays(s), s);
 	}
@@ -348,6 +358,7 @@ public class VariousService {
 		return false;
 	}
 
+	//重複した処理  日付データから「/」を消して、charの配列に変換して返す
 	private char[] createCharList(String s) {
 		return s.replaceAll("/", "").toCharArray();
 	}

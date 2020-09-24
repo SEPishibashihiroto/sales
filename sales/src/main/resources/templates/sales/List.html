@@ -28,7 +28,7 @@
 				th:method="get">
 				<table>
 					<tr>
-						<th class="seachengin">検索</th>
+						<th  rowspan="2" class="seachengin">検索</th>
 						<td class="titlecell">顧客</td>
 						<td class="koron">：</td>
 						<td class="inputcell"><select name="SeachCustomer">
@@ -44,7 +44,6 @@
 							th:field="*{SeachTitle}" class="inputbox SeachTitle"></td>
 					</tr>
 					<tr>
-						<td></td>
 						<td class="titlecell">ステータス</td>
 						<td class="koron">：</td>
 						<td class="inputcell"><select name="SeachStatus">
@@ -144,9 +143,9 @@
 
 					<td class="title" th:if="*{(title.length()>6)}"
 						th:text="*{#strings.substring(title,0,5) + '...'}"
-						th:name="*{title}" th:id="title" th:title="*{title}"></td>
+						th:name="*{note}" th:id="title" th:title="*{title}"></td>
 					<td class="title" th:if="*{!(title.length()>6)}" th:text="*{title}"
-						th:name="*{title}" th:id="title" th:title="*{title}"></td>
+						th:name="*{note}" th:id="title" th:title="*{title}"></td>
 
 					<td class="count" th:text="*{count} + '式'"></td>
 					<td class="dateul">
@@ -194,8 +193,8 @@
 						</form>
 					</td>
 
-					<td class="fulltitle"><input type="hidden" th:value="*{title}"
-						name="fulltitle" th:class="*{title}"></td>
+					<td class="note" th:title="*{note}" th:value="*{note}"
+						th:name="*{note}"></td>
 				</tr>
 
 			</tbody>
@@ -335,11 +334,11 @@
 
 	<script>
 		$(function() {
-			$('.title', $('table.list')).balloon({
+			var title = $('.title', $('table.list'));
+			title.balloon({
+				contents : title.attr("title"),
 				// 吹き出しを対象の上に作成
 				position : "null",
-				// 吹き出し端に付く正三角形のサイズ（高さ）
-				tipSize : 20,
 				// 吹き出しの CSS 設定です
 				css : {
 					"width" : "350px",
@@ -353,6 +352,7 @@
 					"text-align" : "center",
 				}
 			});
+
 		});
 	</script>
 

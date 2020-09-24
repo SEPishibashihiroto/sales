@@ -16,15 +16,15 @@ body {
 
 .rightmenu {
 	float: right;
-	margin-right: 93px;
 }
 
 .seachtable table {
-	width: 700px;
+	margin-right:40px;
 	border-collapse: collapse;
 }
 
-.seachtable th, .seachtable td {
+.seachtable th, .seachtable td {<!--
+	border: 1px solid #000; -->
 	height: 35px;
 }
 
@@ -41,7 +41,7 @@ body {
 }
 
 .seachengin {
-	width: 100px;
+	width:40px;
 	text-align: center;
 }
 
@@ -52,10 +52,6 @@ body {
 
 .koron {
 	width: 10px;
-}
-
-.inputcell {
-	width: 200px;
 }
 
 .listtable {
@@ -181,6 +177,6 @@ body {
 	margin-bottom: 10px;
 }
 
-.fulltitle {
+.note {
 	display: none;
 }

@@ -78,4 +78,8 @@ public class Update {
 	 *デリートフラグ
 	 */
 	private String delete_flg;
+	/**
+	 *備考
+	 */
+	private String note;
 }

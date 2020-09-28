@@ -16,14 +16,12 @@ public class Status {
 	 * */
 	@Id
 	private int customerid;
-
 	/**
 	 * ステータスid
 	 * 複合キー2
 	 * */
 	@Id
 	private int statusid;
-
 	/**
 	 * ステータス名
 	 * */

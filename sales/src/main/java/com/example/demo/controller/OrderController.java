@@ -40,20 +40,15 @@ public class OrderController {
 				|| SeachRequest.getSeachCustomer().equals("bran")) ? "" : SeachRequest.getSeachCustomer();
 		String SeachTitle = (SeachRequest.getSeachTitle() == null) ? "" : SeachRequest.getSeachTitle();
 		String SeachStatus = (SeachRequest.getSeachStatus() == null) ? "" : SeachRequest.getSeachStatus();
-
 		Page<Order> userPage = (SeachCustomer.equals("") && SeachTitle.equals("") && SeachStatus.equals(""))
 				? orderService.getSeachUsers(pageable)
 				: orderService.getSeachUsers(SeachCustomer, SeachTitle, SeachStatus, pageable);
-
 		variousService.addListModel(model);
 		model.addAttribute("page", userPage);
 		model.addAttribute("orders", userPage.getContent());
-		//		model.addAttribute("orders", userPage.getContent());
 		model.addAttribute("SeachRequest", SeachRequest);
-
 		return "sales/List";
 	}
-
 	/**
 	 * 登録画面を表示
 	*/
@@ -64,7 +59,6 @@ public class OrderController {
 				(addOrderRequest.getCustomerid() == null) ? addOrderRequest : variousService.setValue(addOrderRequest));
 		return "sales/Add";
 	}
-
 	/**
 	 * 登録エラーチャック
 	 * エラーなし　→　登録確認画面へ
@@ -85,7 +79,6 @@ public class OrderController {
 		model.addAttribute("addOrderRequest", addOrderRequest);
 		return "sales/AddCheck";
 	}
-
 	/**
 	 * 登録実行
 	*/
@@ -97,7 +90,6 @@ public class OrderController {
 		orderService.create(addOrderRequest);
 		return "redirect:/sales/List";
 	}
-
 	/**
 	 * 編集画面を表示
 	*/
@@ -110,7 +102,6 @@ public class OrderController {
 						: variousService.setValue(editOrderRequest));
 		return "sales/Edit";
 	}
-
 	/**
 	 * 編集エラーチャック
 	 * エラーなし　→　編集確認画面へ
@@ -132,7 +123,6 @@ public class OrderController {
 		model.addAttribute("editOrderRequest", editOrderRequest);
 		return "sales/EditCheck";
 	}
-
 	/**
 	 * 編集実行
 	*/
@@ -145,7 +135,6 @@ public class OrderController {
 		orderService.update(editOrderRequest);
 		return "redirect:/sales/List";
 	}
-
 	/**
 	 * 削除画面を表示
 	*/
@@ -155,7 +144,6 @@ public class OrderController {
 		model.addAttribute("deleteOrderRequest", variousService.setValue(id));
 		return "sales/Delete";
 	}
-
 	/**
 	 * 削除実行
 	*/

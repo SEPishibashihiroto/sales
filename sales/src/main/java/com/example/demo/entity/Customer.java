@@ -16,7 +16,6 @@ public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String customerid;
-
 	/**
 	 * 顧客名
 	 * */

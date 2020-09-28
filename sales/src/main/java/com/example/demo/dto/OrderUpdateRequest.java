@@ -8,14 +8,12 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class OrderUpdateRequest extends OrderRequest {
-
 	/**
 	 * 一覧画面のNo.のこと
 	 * salesテーブルではidカラムを指す
 	 * */
 	@NotNull
 	private int id;
-
 	/**
 	 * 削除フラグ
 	 * 0 or 1 が入る

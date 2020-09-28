@@ -18,25 +18,20 @@ import com.example.demo.entity.Update;
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class VariousService {
-
 	/**
 	 * OrderService以外のメソッドを扱う
 	 * 主にOrderControllerで使用
 	 * */
-
 	@Autowired
 	OrderService orderService;
-
 	//顧客のプルダウン作成に必要なものを取得
 	public List<Customer> createListC() {
 		return orderService.getCustomer();
 	}
-
 	//ステータスのプルダウン作成に必要なものを取得
 	public List<Status> createListS() {
 		return orderService.getStatus();
 	}
-
 	//編集や削除で取得した情報を実行で使用する型に情報をセット
 	public OrderUpdateRequest setValue(int id) {
 		Update order = orderService.findUpdateById(id);
@@ -55,10 +50,8 @@ public class VariousService {
 		orderUpdateRequest.setStatusid(order.getStatusid());
 		orderUpdateRequest.setDelete_flg(order.getDelete_flg());
 		orderUpdateRequest.setNote(order.getNote());
-
 		return orderUpdateRequest;
 	}
-
 	//編集確認画面から戻るボタンを使用して編集画面に遷移した際に入力情報をセット
 	public OrderUpdateRequest setValue(OrderUpdateRequest editOrderRequest) {
 		OrderUpdateRequest orderUpdateRequest = new OrderUpdateRequest();
@@ -77,7 +70,6 @@ public class VariousService {
 		orderUpdateRequest.setDelete_flg(editOrderRequest.getDelete_flg());
 		return orderUpdateRequest;
 	}
-
 	//登録確認画面から戻るボタンを使用して登録画面に遷移した際に入力情報をセット
 	public OrderRequest setValue(OrderRequest addOrderRequest) {
 		OrderRequest orderRequest = new OrderRequest();
@@ -94,7 +86,6 @@ public class VariousService {
 		orderRequest.setStatusid(addOrderRequest.getStatusid());
 		return orderRequest;
 	}
-
 	//バリデーション
 	public List<String> createErrorList(OrderRequest request) {
 		List<String> errorList = new ArrayList<String>();
@@ -113,7 +104,6 @@ public class VariousService {
 				errorList.add(getErrorMessage(1));
 			}
 		}
-
 		/**
 		 * S番号に関するエラー
 		 **/
@@ -124,7 +114,6 @@ public class VariousService {
 				errorList.add(getErrorMessage(3));
 			}
 		}
-
 		/**
 		 * 件名に関するエラー
 		 * */
@@ -142,7 +131,6 @@ public class VariousService {
 				errorList.add(getErrorMessage(6));
 			}
 		}
-
 		/**
 		 * 納入指定日に関するエラー
 		 * */
@@ -182,10 +170,8 @@ public class VariousService {
 		if (request.getStatus().equals("") || request.getStatus().equals("bran")) {
 			errorList.add(getErrorMessage(14));
 		}
-
 		return errorList;
 	}
-
 	//エラー文
 	private String getErrorMessage(int n) {
 		List<String> messageList = new ArrayList<String>();
@@ -206,9 +192,8 @@ public class VariousService {
 		messageList.add("ステータスは必須項目です");//14
 		return messageList.get(n);
 	}
-
 	//文字数確認
-	private static int stringDigits(String s) {
+	private int stringDigits(String s) {
 		char[] chars = s.toCharArray();
 		int digits = 0;
 		for (int i = 0; i < chars.length; i++) {
@@ -216,7 +201,6 @@ public class VariousService {
 		}
 		return digits;
 	}
-
 	//数字桁数確認
 	private int getdigitcount(int n) {
 		int cnt = 0;
@@ -226,38 +210,31 @@ public class VariousService {
 		}
 		return cnt;
 	}
-
 	//文字列のもので数字で書かれているか
 	private boolean isInt(String s) {
 		boolean isDigit = true;
 		for (int i = 0; i < s.length(); i++) {
 			isDigit = Character.isDigit(s.charAt(i));
-			if (!isDigit) {
-				break;
-			}
+			if (!isDigit) break;
 		}
 		return isDigit;
 	}
-
 	//重複した処理  顧客とステータスのリストのモデル追加
 	public void addListModel(Model model) {
 		model.addAttribute("clist", createListC());
 		model.addAttribute("slist", createListS());
 	}
-
 	//重複した処理  確認画面にて使用するモデル追加
 	public void addIndividualModel(OrderRequest request, Model model) {
 		model.addAttribute("sNumber", writesunmber(request.getSnumber()));
 		model.addAttribute("orderPrice", writekanma(request.getOrderprice()));
 		model.addAttribute("quotePrice", writekanma(request.getQuoteprice()));
 	}
-
 	//重複した処理  エラー検知により入力画面へ戻る際のidセット
 	public void setIdes(OrderRequest request) {
 		request.setCustomerid(request.getCustomer());
 		request.setStatusid(request.getStatus());
 	}
-
 	/**入力された日付が正しい日付かどうか
 	 * String s … 入力された日付データ
 	 * ismonth … sを渡してsの月の部分を取り出し、1～12であるかどうかを確認
@@ -271,7 +248,6 @@ public class VariousService {
 	private boolean chackDayData(String s) {
 		return ismonth(s) && isday(createdays(s), s);
 	}
-
 	//対応した月の日付表を渡す
 	private int[] createdays(String s) {
 		char[] chars = createCharList(s);
@@ -280,13 +256,11 @@ public class VariousService {
 			nen *= 10;
 			nen += Integer.parseUnsignedInt("" + chars[i]);
 		}
-		System.out.println("nen ; " + nen);
 		int month = 0;
 		for (int i = 4; i < 6; i++) {
 			month *= 10;
 			month += Integer.parseUnsignedInt("" + chars[i]);
 		}
-		System.out.println("month : " + month);
 		int[] days;
 		switch (month) {
 		case 1:
@@ -324,7 +298,6 @@ public class VariousService {
 		}
 		return null;
 	}
-
 	//入力された日付の「日」が正しいかどうか
 	private boolean isday(int[] list, String s) {
 		char[] chars = createCharList(s);
@@ -333,7 +306,6 @@ public class VariousService {
 			day *= 10;
 			day += Integer.parseUnsignedInt("" + chars[i]);
 		}
-		System.out.println("day : " + day);
 		for (int listdays : list) {
 			if (listdays == day) {
 				return true;
@@ -341,7 +313,6 @@ public class VariousService {
 		}
 		return false;
 	}
-
 	//入力された日付の「月」が正しいかどうか
 	private boolean ismonth(String s) {
 		char[] chars = createCharList(s);
@@ -357,12 +328,10 @@ public class VariousService {
 		}
 		return false;
 	}
-
 	//重複した処理  日付データから「/」を消して、charの配列に変換して返す
 	private char[] createCharList(String s) {
 		return s.replaceAll("/", "").toCharArray();
 	}
-
 	/**
 	 * データ表示において必要なものを挿入したり削除したりする
 	 * */
@@ -370,15 +339,12 @@ public class VariousService {
 	private String writesura(String s) {
 		return s.equals("") ? s : s.replaceAll("-", "/");
 	}
-
 	//確認画面のS番号に’S-’をつける
 	public String writesunmber(String s) {
 		return s.equals("") ? s : "S-" + s;
 	}
-
 	//確認画面の金額にカンマと'\'をつける
 	public String writekanma(int n) {
 		return n == 0 ? "" + n : "\\" + String.format("%,d", n);
 	}
-
 }

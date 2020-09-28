@@ -19,11 +19,9 @@ public class StatusPK implements Serializable {
 	 * */
 	@Column(name = "customerid")
 	private int customerid;
-
 	/**
 	 * ステータスid
 	 * */
 	@Column(name = "statusid")
 	private int statusid;
-
 }

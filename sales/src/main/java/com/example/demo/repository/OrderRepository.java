@@ -30,7 +30,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 			"ORDER BY sales.id ASC", nativeQuery = true) // SQL
 	public Page<Order> findSeachAll(@Param("SeachCustomer") String SeachCustomer,
 			@Param("SeachTitle") String SeachTitle, @Param("SeachStatus") String SeachStatus, Pageable pageable);
-
 	//検索条件なし
 	@Query(value = "SELECT sales.id,customer.customerid,customer.customername AS customer,sales.orderdate,sales.snumber,sales.title,sales.count,sales.specifieddate,"
 			+

@@ -44,7 +44,6 @@ public class OrderService {
 	private StatusRepository statusRepository;
 	@Autowired
 	private UpdateRepository updateRepository;
-
 	/**
 	 * ユーザー情報 全検索
 	 * @return 検索結果
@@ -53,26 +52,22 @@ public class OrderService {
 	public Page<Order> getSeachUsers(String SeachCustomer, String SeachTitle, String SeachStatus, Pageable pageable) {
 		return orderRepository.findSeachAll(SeachCustomer, SeachTitle, SeachStatus, pageable);
 	}
-
 	//検索条件がないときに使用
 	public Page<Order> getSeachUsers(Pageable pageable) {
 		return orderRepository.findSeachAll(pageable);
 	}
-
 	/**
 	 * 顧客取得
 	 */
 	public List<Customer> getCustomer() {
 		return customerRepository.findCustomerAll();
 	}
-
 	/**
 	 * ステータス取得
 	 */
 	public List<Status> getStatus() {
 		return statusRepository.findStatusAll();
 	}
-
 	/**
 	 * 登録実行
 	 */
@@ -93,14 +88,12 @@ public class OrderService {
 		order.setNote(addOrderRequest.getNote());
 		updateRepository.save(order);
 	}
-
 	/**
 	 * 一覧画面のNo.の番号検索してその番号の情報を取得
 	 */
 	public Update findUpdateById(int id) {
 		return updateRepository.findById(id).get();
 	}
-
 	/**
 	 * 編集を実行
 	 */
@@ -121,7 +114,6 @@ public class OrderService {
 		order.setDelete_flg(editOrderRequest.getDelete_flg());
 		order.setNote(editOrderRequest.getNote());
 	}
-
 	/**
 	 * 削除を実行(論理削除)
 	 */
@@ -129,7 +121,6 @@ public class OrderService {
 		Update order = findUpdateById(deleteOrderRequest.getId());
 		order.setDelete_flg(deleteOrderRequest.getDelete_flg());
 	}
-
 	/**
 	 * データベース登録、アップデートにおいて不必要なものを削除する
 	 * */
@@ -137,5 +128,4 @@ public class OrderService {
 	private String deletesura(String s) {
 		return (s.equals("")) ? s : s.replace("/", "");
 	}
-
 }

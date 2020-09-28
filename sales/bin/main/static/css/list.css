@@ -23,8 +23,7 @@ body {
 	border-collapse: collapse;
 }
 
-.seachtable th, .seachtable td {<!--
-	border: 1px solid #000; -->
+.seachtable th, .seachtable td {
 	height: 35px;
 }
 
@@ -40,7 +39,7 @@ body {
 	color: #000;
 }
 
-.seachengin {
+.seachtitle {
 	width:40px;
 	text-align: center;
 }
@@ -165,18 +164,17 @@ body {
 	color: #000;
 }
 
-.pagingtop ul {
+.paging ul {
 	padding: 0;
 	margin-top: 10px;
 	margin-bottom: 0;
 }
-
-.pagingbot ul {
-	padding: 0;
-	margin-top: 0;
-	margin-bottom: 10px;
+.paging ul li{
+	display: inline;
+	margin-right: 10px;
 }
 
-.note {
+.listFC,.listLC{
 	display: none;
 }
+
